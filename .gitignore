@@ -18,6 +18,8 @@ one.*
 *.cb
 *.cb2
 
+## DS_Store
+.DS_Store
 
 ## Intermediate documents:
 *.dvi
