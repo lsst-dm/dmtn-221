@@ -55,13 +55,76 @@ The baselined timeseries features to be computed in Alert Production include a L
 % ADD CONTENT HERE
 % You can also use the \input command to include several content files.
 
+\section{Motivation}
+
+
+
+\section{Synthetic Light Curves}
 
 \begin{figure*}
-  \includegraphics[width=0.8\textwidth]{figures/lightcurve_demo.pdf}
+  \includegraphics[width=0.9\textwidth]{figures/lightcurve_demo.pdf}
   \centering 
-  \caption{The above panels demonstrate the multi-band light curves simulated from ElasTiCC using RR Lyrae (left panel) and Eclipsing Binaries (right panel). The first column of each panel shows the observed light curves, and the second the phase folded light curves at the correct period after 12 months.}
+  \caption{The above panels demonstrate the multi-band light curves simulated from ElasTiCC using RR lyrae (left panel) and eclipsing binaries (right panel). The first column of each panel shows the observed light curves, and the second the phase folded light curves at the correct period after 12 months.}
   \label{fig:comp}
 \end{figure*}
+
+
+
+\section{Injection-Recovery Testing}
+
+We consider two models of periodic phenomena: RR lyrae and eclipsing binaries ranging from a periods of 0.2 days to 10 days. All computations of the floating-mean Lomb-Scargle periodogram are using the out-of-box open-source Python package `gatspy` (source). 
+
+
+
+\subsection{Single Band Lomb-Scargle Periodogram}
+
+% TODO
+\begin{itemize}
+\item Injected vs recovered period plots EB and RRL
+\item Fraction of correctly recovered periods using single-band Lomb-Scargle (for N=1...3 Fourier components)  
+\end{itemize}
+
+\begin{figure*}
+  \includegraphics[width=0.9\textwidth]{figures/singleband_lsp.pdf}
+  \centering 
+  \caption{We show the injected (true period) versus recovered highest peak in the periodogram for a sample of 1000 RR lyrae and eclipsing binaries. Each column shows the period recovery for N=1 to N=3 Fourier components when computing the Lomb-Scargle periodogram.}
+  \label{fig:comp}
+\end{figure*}
+
+
+
+
+\subsection{Multi-Band Lomb-Scargle Periodogram}
+
+
+% TODO
+\begin{itemize}
+\item Motivation and mathematical explanation of multi-band Lomb Scargle 
+\item Injected vs recovered period plots EB and RRL
+\item Fraction of correctly recovered periods using single-band Lomb-Scargle (for N=1...3 Fourier components)  
+\end{itemize}
+
+
+\subsection{Peak Significance Metric}
+
+% TODO
+\begin{itemize}
+\item Bootstraping results 
+\item Bootstrap results correlation with Baluev approximation
+\item Application to other survey data (i.e SDSS)
+\end{itemize}
+
+
+\section{Timing Analysis}
+
+% TODO
+\begin{itemize}
+\item Run time as a function of Fourier components (single band)
+\item Run time as a function of Fourier components (multi-band)
+\item Run time as a function of Nyquist frequency and oversampling factor
+\end{itemize}
+
+
 
 
 
