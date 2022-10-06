@@ -55,7 +55,7 @@ The baselined timeseries features to be computed in Alert Production include a L
 The characterization of periodicity from time-series is a fundamental constraint to numerous astrophysical applications. Phenomenologically, estimating the periodicity and its significance can shed light on stellar pulsation theory \citep{Antonello:Antonello81}, distance estimation and mapping of the Galaxy through the period-luminosity relationship \citep{Skowron:Skowron2019}, constraint fundamental parameters of stellar binaries \citep{Farinella:Farinella1979} and stellar rotation \citep{Walkowicz:Walkowicz13}. In the recent decade, the use of periodicity has also been extensively used as a feature to classify variable phenomena \citep{Richards:R13} across the HR diagram. 
 
 
- Previous studies, such as work from \citep{Oluseyi:Oluseyi2012}, have demonstrated the injection-recovery test for synthetically generated RR Lyrae from SDSS and have demonstrated that correct periods can be computed. However, no study to date has demonstrated the recovery period distribution of more complex periodic phenomena (i.e eclipsing binaries, quasi-periodic AGN).
+Previous studies, such as work from \cite{2012AJ....144....9O}, have demonstrated the injection-recovery test for synthetically generated RR Lyrae from SDSS and have demonstrated that correct periods can be computed. However, no study to date has demonstrated the recovery period distribution of more complex periodic phenomena (i.e eclipsing binaries, quasi-periodic AGN).
 
 
 \section{Synthetic Light Curves}
@@ -71,7 +71,6 @@ A detailed Jupyter notebook interacting and fetching the ELAsTiCC light curves c
   \includegraphics[width=0.9\textwidth]{figures/lightcurve_demo.pdf}
   \centering 
   \caption{The above panels demonstrate the multi-band light curves simulated from ElasTiCC using RR lyrae (left panel) and eclipsing binaries (right panel). The first column of each panel shows the observed light curves, and the second the phase folded light curves at the correct period after 12 months.}
-  \label{fig:comp}
 \end{figure*}
 
 
@@ -92,7 +91,6 @@ We consider two models of periodic phenomena: RR lyrae and eclipsing binaries ra
   \includegraphics[width=0.9\textwidth]{figures/singleband_lsp.pdf}
   \centering 
   \caption{We show the injected (true period) versus recovered highest peak in the periodogram for a sample of 1000 RR lyrae and eclipsing binaries. Each column shows the period recovery for N=1 to N=3 Fourier components when computing the Lomb-Scargle periodogram.}
-  \label{fig:comp}
 \end{figure*}
 
 However, given that only roughly 17 percent of each bandpass filter will be available, the single-band Lomb-Scargle misses by a higher margin the underlying true period. We now turn our attention to the multi-band Lomb-Scargle.
@@ -113,7 +111,6 @@ Next, we test the multi-band Lomb-Scargle periodogram implementation adapted on 
   \includegraphics[width=0.9\textwidth]{figures/multi_lsp_rectest.pdf}
   \centering 
   \caption{Multi-band injection-recovery test for 5000 RR Lyrae (top row) and eclipsing binaries (bottom row). Each column title includes the number of Fourier base and band terms used to compute the Lomb-Scargle periodogram. Additionally we color code each recovered period by the number of detections. The overlaid curved lines represent the n=1 aliasing, while the straight lines represent the n=1,2 harmonics.}
-  \label{fig:comp}
 \end{figure*}
 
 
