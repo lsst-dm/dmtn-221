@@ -57,11 +57,7 @@ The characterization of periodicity from time-series is a fundamental constraint
 
 
 \section{Synthetic Light Curves}
-
-
-In this study we use the training set Extended LSST Astronomical Time-series Classification Challenge (ELAsTiCC) light curves. In short, ELAsTiCC is an end-to-end real-time pipeline for generating mock photometric alerts at the expected Legacy Survey of Time and Space (LSST) rate. The photometric alerts will be distributed in real-time to brokers to benchmark classification algorithms. The ELAsTiCC uses the V.1.7 cadence strategy from op_sims. A single detection is based on the DIA performance from DC2. Each light curve include photometric noise using Poisson noise that includes the equivalent area, background noise per unit area, sky and CCD read noise. Most importantly to this study, the training set light curves simulates forced photometry which we recommend the time series features to be calculated upon.   
-
-Here we present two classes of periodic sources: RR Lyrae and eclipsing binaries. Both RRL's and EB's represent both the extrema of simple and complex periodic sources that will throughly test the underlying ability of the periodogram to find the correct period. Previous studies, such as work from \cite{Oluseyi:Oluseyi2012} have demonstrated the injection-recovery test for RR Lyrae. A detailed Jupyter notebook interacting and fetching the ELAsTiCC light curves can be found here. 
+In this study we use the training set Extended LSST Astronomical Time-series Classification Challenge (ELAsTiCC) light curves. In short, ELAsTiCC is an end-to-end real-time pipeline for generating mock photometric alerts at the expected Legacy Survey of Time and Space (LSST) rate. The photometric alerts will be distributed in real-time to brokers to benchmark classification algorithms. The ELAsTiCC uses the V.1.7 cadence strategy from op_sims. A single detection is based on the DIA performance from DC2. Each light curve include photometric noise using Poisson noise that includes the equivalent area, background noise per unit area, sky and CCD read noise. Most importantly to this study, the training set light curves simulates forced photometry which we recommend the time series features to be calculated upon. Here we present two classes of periodic sources: RR Lyrae and eclipsing binaries. Both RRL's and EB's represent both the extrema of simple and complex periodic sources that will throughly test the underlying ability of the periodogram to find the correct period. Previous studies, such as work from \citet{Oluseyi:Oluseyi2012} have demonstrated the injection-recovery test for RR Lyrae. A detailed Jupyter notebook interacting and fetching the ELAsTiCC light curves can be found here. 
 
 \begin{figure*}
   \includegraphics[width=0.9\textwidth]{figures/lightcurve_demo.pdf}
@@ -72,7 +68,6 @@ Here we present two classes of periodic sources: RR Lyrae and eclipsing binaries
 
 
 \section{Injection-Recovery Testing}
-
 We consider two models of periodic phenomena: RR lyrae and eclipsing binaries ranging from a periods of 0.2 days to 10 days. All computations of the floating-mean Lomb-Scargle periodogram are using the out-of-box open-source Python package `gatspy` \citet{VanderPlas:VP2015}. 
 
 
@@ -92,18 +87,15 @@ We consider two models of periodic phenomena: RR lyrae and eclipsing binaries ra
   \label{fig:comp}
 \end{figure*}
 
-However, given that only roughly $17 \%$ of each bandpass filter will be available, the single-band Lomb-Scargle misses by a higher margin the underlying true period. We now turn our attention to the multi-band Lomb-Scargle.
+However, given that only roughly 17 percent of each bandpass filter will be available, the single-band Lomb-Scargle misses by a higher margin the underlying true period. We now turn our attention to the multi-band Lomb-Scargle.
 
 \subsection{Multi-Band Lomb-Scargle Periodogram}
 
 Next, we test the multi-band Lomb-Scargle periodogram implementation adapted on `gatspy` to our ELAsTiCC light curves.  
 
 \begin{equation}
-y_k(t \mid \omega, \theta)=& \theta_0+\sum_{n=1}^{M_{\text {base }}}\left[\theta_{2 n-1} \sin (n \omega t)+\theta_{2 n} \cos (n \omega t)\right] \\ & \theta_0^{(k)}+\sum_{n=1}^{M_{\text {band }}}\left[\theta_{2 n-1}^{(k)} \sin (n \omega t)+\theta_{2 n}^{(k)} \cos (n \omega t)\right] . 
+y_k(t \mid \omega, \theta)=& \theta_0+\sum_{n=1}^{M_{\text {base }}}\left[\theta_{2 n-1} \sin (n \omega t)+\theta_{2 n} \cos (n \omega t)\right] \\ & \theta_0^{(k)}+\sum_{n=1}^{M_{\text {band }}}\left[\theta_{2 n-1}^{(k)} \sin (n \omega t)+\theta_{2 n}^{(k)} \cos (n \omega t)\right] 
 \end{equation}
-
-
-
 
 % TODO
 \begin{itemize}
