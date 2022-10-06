@@ -61,10 +61,7 @@ The characterization of periodicity from time-series is a fundamental constraint
 
 In this study we use the training set Extended LSST Astronomical Time-series Classification Challenge (ELAsTiCC) light curves. In short, ELAsTiCC is an end-to-end real-time pipeline for generating mock photometric alerts at the expected Legacy Survey of Time and Space (LSST) rate. The photometric alerts will be distributed in real-time to brokers to benchmark classification algorithms. The ELAsTiCC uses the V.1.7 cadence strategy from op_sims. A single detection is based on the DIA performance from DC2. Each light curve include photometric noise using Poisson noise that includes the equivalent area, background noise per unit area, sky and CCD read noise. Most importantly to this study, the training set light curves simulates forced photometry which we recommend the time series features to be calculated upon.   
 
-Here we present two classes of periodic sources: RR Lyrae and eclipsing binaries. Both RRL's and EB's represent both the extrema of simple and complex periodic sources that will throughly test the underlying ability of the periodogram to find the correct period. Previous studies, such as work from \citet{Oluseyi:Oluseyi2012} have demonstrated the injection-recovery test for RR Lyrae. 
-
-
-A detailed Jupyter notebook interacting and fetching the ELAsTiCC light curves can be found here. 
+Here we present two classes of periodic sources: RR Lyrae and eclipsing binaries. Both RRL's and EB's represent both the extrema of simple and complex periodic sources that will throughly test the underlying ability of the periodogram to find the correct period. Previous studies, such as work from \citet{Oluseyi:Oluseyi2012} have demonstrated the injection-recovery test for RR Lyrae. A detailed Jupyter notebook interacting and fetching the ELAsTiCC light curves can be found here. 
 
 \begin{figure*}
   \includegraphics[width=0.9\textwidth]{figures/lightcurve_demo.pdf}
