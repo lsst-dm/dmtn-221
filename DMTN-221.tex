@@ -16,7 +16,7 @@
 % \setDocSubtitle{A subtitle}
 
 \author{%
-Anastasios Tzanidakis
+Anastasios Tzanidakis, Eric Bellm
 }
 
 \setDocRef{DMTN-221}
@@ -60,23 +60,26 @@ Previous work from \cite{2012AJ....144....9O} demonstrate the concept of injecti
 
 \section{Synthetic Light Curves}
 In this study we use the training set Extended LSST Astronomical Time-series Classification Challenge (ELAsTiCC) light curves with a 12 month history that will best mimic the calculations performed for AP. In short, ELAsTiCC is an end-to-end real-time pipeline for generating mock photometric alerts at the expected Legacy Survey of Time and Space (LSST) rate. The photometric alerts will be distributed in real-time to brokers to benchmark classification algorithms. The ELAsTiCC uses the v.1.7 cadence strategy from op$\_$sims. A single detection is based on the DIA performance from DC2. Each light curve include photometric noise using Poisson noise that includes the equivalent area, background noise per unit area, sky and CCD read noise. Most importantly, the ELAsTiCC light curves simulate force photometry alerts which we recommend all time series features to be calculated upon. 
-
-Here we present two classes of periodic sources: RR Lyrae (RRL) and eclipsing binaries (EB). Both RRL's and EB's represent both the extrema of simple and complex periodic sources that will throughly test the underlying ability of the periodogram to find the correct period. Currently, the eclipsing binary sample from ELAsTiCC that was generated from open-source Python package (ELISa). the only contains a few hundred simulated binaries. To maximize the use different eclipsing binary stars sampled at different phases, each light curve over a three year photometric history is sampled at some random time and ensures that the maximum baseline is less than 12 months. A detailed Jupyter notebook interacting and fetching the ELAsTiCC light curves can be found here. 
+	
+	Here we present two classes of periodic sources: RR Lyrae (RRL) and eclipsing binaries (EB). Both RRL's and EB's represent both the extrema of simple and complex periodic sources that will throughly test the underlying ability of the periodogram to find the correct period. Currently, the eclipsing binary sample from ELAsTiCC that was generated from open-source Python package (ELISa). the only contains a few hundred simulated binaries. To maximize the use different eclipsing binary stars sampled at different phases, each light curve over a three year photometric history is sampled at some random time and ensures that the maximum baseline is less than 12 months. In Figure \ref{fig:light_curve_demo} we show the typical multi-band AP light curve sampled from ELAsTiCC with uncertainties. A detailed Jupyter notebook interacting and fetching the ELAsTiCC light curves can be found here. 
 
 \begin{figure*}
   \includegraphics[width=0.9\textwidth]{figures/lightcurve_demo.pdf}
   \centering 
   \caption{The above panels demonstrate the multi-band light curves simulated from ElasTiCC using RR lyrae (left panel) and eclipsing binaries (right panel). The first column of each panel shows the observed light curves, and the second the phase folded light curves at the correct period after 12 months.}
+   \label{fig:light_curve_demo}
 \end{figure*}
 
 
 \section{Injection-Recovery Testing}
-We consider two models of periodic phenomena: RR lyrae and eclipsing binaries ranging from a periods of 0.2 days to 10 days. All computations of the floating-mean Lomb-Scargle periodogram are using the out-of-box open-source Python package `gatspy` \citet{VanderPlas:VP2015}. 
+We consider two models of periodic phenomena: RR lyrae and eclipsing binaries ranging from a periods of 0.2 days to 10 days. All computations of the floating-mean Lomb-Scargle periodogram are using the open-source Python package `gatspy` \citet{VanderPlas:VP2015}. 
 
 
 \subsection{Single Band Lomb-Scargle Periodogram}
 
-% TODO
+We first consider the case of single-band detections from AP. Here we aim to answer if the 12 month AP history in a single-band light curve is enough to recover periods. We consider the canonical floating mean to estimate the periodogram of 10,000 alert light curves in the $r$-band for three Fourier component modes. In Figure \ref{fig:single_band_lsp} we show the results of this analysis for RRL's (rop row) and EB's (bottom row). For each light curve model, we randomly sample a light curve and compute the Lomb-Scargle periodogram using a heuristic period grid with an oversampling factor of 2 and Nyquist frequency of 30 ($\sim$0.03 days) to account for the fast periodic phenomena. We extrapolated the highest power period from the periodogram and compare it to the true period. In Figure \ref{fig:single_band_lsp} we also include the number of $r$-band detections for each light curve. As expected, we did not find any preference of an optical single-band photometric filter that outperformed the others.
+
+% Todo
 \begin{itemize}
 \item Injected vs recovered period plots eclipsing binaries and RRL
 \item Fraction of correctly recovered periods using single-band Lomb-Scargle (for N=1...3 Fourier components)  
@@ -85,9 +88,11 @@ We consider two models of periodic phenomena: RR lyrae and eclipsing binaries ra
 \begin{figure*}
   \includegraphics[width=0.9\textwidth]{figures/singleband_lsp.pdf}
   \centering 
-  \caption{We show the injected (true period) versus recovered highest peak in the periodogram for a sample of 1000 RR lyrae and eclipsing binaries. Each column shows the period recovery for N=1 to N=3 Fourier components when computing the Lomb-Scargle periodogram.}
+  \caption{We show the injected (true period) versus recovered highest peak in the periodogram for a sample of 1000 $r$-band detections from RR lyrae and eclipsing binaries. Each column shows the period recovery for N=1 to N=3 Fourier components when computing the Lomb-Scargle periodogram.}
+  \label{fig:single_band_lsp}
 \end{figure*}
 
+% Conclusions regarding the single-band Lomb Scargle
 However, given that only roughly 17 percent of each bandpass filter will be available, the single-band Lomb-Scargle misses by a higher margin the underlying true period. We now turn our attention to the multi-band Lomb-Scargle.
 
 \subsection{Multi-Band Lomb-Scargle Periodogram}
@@ -120,6 +125,13 @@ Next, we test the multi-band Lomb-Scargle periodogram implementation adapted on 
 
 
 \section{Timing Analysis}
+In this section we provide information regarding the scalability and run-time of both single-band and multi-band Lomb Scargle periodogram. 
+
+\begin{figure*}
+  \includegraphics[width=0.9\textwidth]{figures/run_time_analysis.pdf}
+  \centering 
+  \caption{Average run time per number of $ugrizy$ light curve detections. Each column represents the model complexity of each multi-band Lomb Scargle periodogram. Within each panel, we use a heuristically determined period grid by varying the oversampling factor and the the Nyquist frequency.  Finally, for each successive run we color code the fractional error compared from the true period.}
+\end{figure*}
 
 % TODO
 \begin{itemize}
