@@ -51,6 +51,10 @@ The baselined timeseries features to be computed in Alert Production include a L
 % ADD CONTENT HERE
 % You can also use the \input command to include several content files.
 
+\section{Note}
+\textcolor{red}{Please note that this DM-technote is currently work in progress, and publicly available. The final findings will be pushed to the DMTN-221 repository in late November of 2022.}
+
+
 \section{Motivation}
 The characterization of periodicity from time-series is a fundamental constraint to numerous astrophysical applications. Phenomenologically, estimating the periodicity and its significance can shed light on stellar pulsation theory \citep{Antonello:Antonello81}, distance estimation and mapping of the Galaxy through the period-luminosity relationship \citep{Skowron:Skowron2019}, constraint fundamental parameters of stellar binaries \citep{Farinella:Farinella1979} and stellar rotation \citep{Walkowicz:Walkowicz13}. In the recent decade, the use of periodicity has also been extensively used as a feature to classify variable phenomena \citep{Richards:R13} across the HR diagram. 
 
@@ -77,7 +81,8 @@ We consider two models of periodic phenomena: RR lyrae and eclipsing binaries ra
 
 \subsection{Single Band Lomb-Scargle Periodogram}
 
-We first consider the case of single-band detections from AP. Here we aim to answer if the 12 month AP history in a single-band light curve is enough to recover periods. We consider the canonical floating mean to estimate the periodogram of 10,000 alert light curves in the $r$-band for three Fourier component modes. In Figure \ref{fig:single_band_lsp} we show the results of this analysis for RRL's (rop row) and EB's (bottom row). For each light curve model, we randomly sample a light curve and compute the Lomb-Scargle periodogram using a heuristic period grid with an oversampling factor of 2 and Nyquist frequency of 30 ($\sim$0.03 days) to account for the fast periodic phenomena. We extrapolated the highest power period from the periodogram and compare it to the true period. In Figure \ref{fig:single_band_lsp} we also include the number of $r$-band detections for each light curve. As expected, we did not find any preference of an optical single-band photometric filter that outperformed the others.
+We first consider the case of single-band detections from AP. Here we aim to answer if the 12 month AP history in a single-band light curve is enough to recover periods. We consider the canonical floating mean to estimate the periodogram of 10,000 alert light curves in the $r$-band for three Fourier component modes. In Figure \ref{fig:single_band_lsp} we show the results of this analysis for RRL's (rop row) and EB's (bottom row). For each light curve model, we randomly sample a light curve and compute the Lomb-Scargle periodogram using a heuristic period grid with an oversampling factor of 2 and Nyquist frequency of 30 ($\sim$0.03 days) to account for the fast periodic phenomena. We extrapolated the highest power period from the periodogram and compare it to the true period. In Figure \ref{fig:single_band_lsp} we also include the number of $r$-band detections for each light curve. As expected, we did not find any preference of an optical single-band photometric filter that outperformed the others. While the RR Lyrae exhibit at larger Fourier modeling modes more aliasing, overall the recovery fraction of correctly identified periods is larger compared to the EBs. For both light curve models, we consistently found in each model configuration that the average correctly identified period coincides with a larger number of detections. Overall we find consistent results for the RR Lyrae done by a similar analysis  by \citet{VanderPlas:VP2015}. The true challenge of this approach comes from the more complex light curves such as the EBs. 
+
 
 % Todo
 \begin{itemize}
@@ -93,11 +98,11 @@ We first consider the case of single-band detections from AP. Here we aim to ans
 \end{figure*}
 
 % Conclusions regarding the single-band Lomb Scargle
-However, given that only roughly 17 percent of each bandpass filter will be available, the single-band Lomb-Scargle misses by a higher margin the underlying true period. We now turn our attention to the multi-band Lomb-Scargle.
+Even with a low completeness, computing the Lomb-Scargle periodogram on single-band time series alerts, this will likely outperform any other known survey due to the large survey volume. Single-band Lomb-Scargle implementations are also faster by a factor of $\sim$5 due to the lower average number of detections per filter. Given that only roughly 17 percent of each bandpass filter will be available, the single-band Lomb-Scargle misses by a higher margin the underlying true period. We now turn our attention to the multi-band Lomb-Scargle.
 
 \subsection{Multi-Band Lomb-Scargle Periodogram}
 
-Next, we test the multi-band Lomb-Scargle periodogram implementation adapted on `gatspy` to our ELAsTiCC light curves.
+Next, we test the multi-band Lomb-Scargle periodogram implementation adapted on \textit{gatspy} to our ELAsTiCC light curves.
 
 % TODO
 \begin{itemize}
