@@ -112,11 +112,6 @@ Next, we test the multi-band Lomb-Scargle periodogram implementation adapted on 
 First is the base Fourier component that describes the overall \textbf{shared} variability, and second is the per band component that is modeled by the residuals of the base component with each photometric filter. In practice, a larger configuration of base and band components can lead to the estimation of more complex light curves. \textit{Gatspy} automatically determines through the use of least-squares minimization the scalar parameters from the above equation. 
 
 
-% TODO
-\begin{itemize}
-\item Discussion of the multi-band power estimation and how it differs by the single-band.
-\item Fraction of correctly recovered periods using single-band Lomb-Scargle (for N=1...3 Fourier components)  
-\end{itemize}
 
 
 \begin{figure*}
@@ -128,32 +123,25 @@ First is the base Fourier component that describes the overall \textbf{shared} v
 
 \subsection{Peak Significance Metric}
 
-% TODO
-\begin{itemize}
-\item Bootstraping results 
-\item Bootstrap results correlation with Baluev approximation
-\item Application to other survey data (i.e SDSS)
-\end{itemize}
-
-
-\section{Timing Analysis}
-In this section we provide information regarding the scalability and run-time of both single-band and multi-band Lomb Scargle periodogram. 
+In this section we discuss possible metrics for peak significance. One challenge when computing the periodogram for billions of sources is the inevitability of spurious period detections, effects of harmonics, and aliasing. One diagnostic used in the literature is the False Alarm Probability (FAP) of a given peak in the power spectrum. The FAP measures the probability uncertainty associated with the selected peak under the null hypothesis.
 
 \begin{figure*}
-  \includegraphics[width=0.9\textwidth]{figures/run_time_analysis.pdf}
+  \includegraphics[width=0.8\textwidth]{figures/fap_approximation_mlsp.pdf}
+  \centering 
+  \caption{Multi-band FAP rate computed via the Baluev approximation compared to a $2\sigma$ bootstrap approach for 5000 RRL and EB alert light curves. For each light curve we also color code the total number of $ugrizy$ detections.}
+\end{figure*}
+
+
+
+\subsection{Timing Analysis}
+
+In this final section we discuss the average run time per method mentioned above. 
+
+\begin{figure*}
+  \includegraphics[width=0.8\textwidth]{figures/run_time_analysis.pdf}
   \centering 
   \caption{Average run time per number of $ugrizy$ light curve detections. Each column represents the model complexity of each multi-band Lomb Scargle periodogram. Within each panel, we use a heuristically determined period grid by varying the oversampling factor and the the Nyquist frequency.  Finally, for each successive run we color code the fractional error compared from the true period.}
 \end{figure*}
-
-% TODO
-\begin{itemize}
-\item Run time as a function of Fourier components (single band)
-\item Run time as a function of Fourier components (multi-band)
-\item Run time as a function of Nyquist frequency and oversampling factor
-\item Discussion on how many periodic sources we expect to find
-\item What recommendations do we make from number of detections and numbers of detections per filter
-\item Test new Astropy multi-band Lomb Scargle implementation, on timing analysis and results 
-\end{itemize}
 
 
 \appendix
