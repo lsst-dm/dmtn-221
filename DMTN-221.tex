@@ -55,19 +55,13 @@ The baselined timeseries features to be computed in Alert Production include a L
 The characterization of periodicity from time-series is a fundamental constraint to numerous astrophysical applications. Phenomenologically, estimating the periodicity and its significance can shed light on stellar pulsation theory \citep{Antonello:Antonello81}, distance estimation and mapping of the Galaxy through the period-luminosity relationship \citep{Skowron:Skowron2019}, constraint fundamental parameters of stellar binaries \citep{Farinella:Farinella1979} and stellar rotation \citep{Walkowicz:Walkowicz13}. In the recent decade, the use of periodicity has also been extensively used as a feature to classify variable phenomena \citep{Richards:R13} across the HR diagram. 
 
 
-Previous work from \cite{2012AJ....144....9O} demonstrate the concept of injection-recovery test for synthetically generated RR Lyrae templates from SDSS using the `opsim1\_29` cadence strategy. 
-
-However, no study to date has demonstrated the recovery period distribution of more complex periodic phenomena (i.e eclipsing binaries, quasi-periodic AGN).
+Previous work from \cite{2012AJ....144....9O} demonstrate the concept of injection-recovery test for synthetically generated RR Lyrae templates from SDSS using the op$\_$sim version 1.29 cadence strategy. However, no study to date has demonstrated the recovery period distribution of more complex periodic phenomena (i.e eclipsing binaries, quasi-periodic AGN). Here we perform an end-to-end, injection and recovery analysis for multi-band time series to asses the statistical significance of period finding in the context of AP. 
 
 
 \section{Synthetic Light Curves}
-In this study we use the training set Extended LSST Astronomical Time-series Classification Challenge (ELAsTiCC) light curves with a 12 month history. In short, ELAsTiCC is an end-to-end real-time pipeline for generating mock photometric alerts at the expected Legacy Survey of Time and Space (LSST) rate. The photometric alerts will be distributed in real-time to brokers to benchmark classification algorithms. The ELAsTiCC uses the v.1.7 cadence strategy from op\_sims. A single detection is based on the DIA performance from DC2. Each light curve include photometric noise using Poisson noise that includes the equivalent area, background noise per unit area, sky and CCD read noise. Most importantly, the ELAsTiCC light curves simulate force photometry alerts which we recommend all time series features to be calculated upon. 
+In this study we use the training set Extended LSST Astronomical Time-series Classification Challenge (ELAsTiCC) light curves with a 12 month history that will best mimic the calculations performed for AP. In short, ELAsTiCC is an end-to-end real-time pipeline for generating mock photometric alerts at the expected Legacy Survey of Time and Space (LSST) rate. The photometric alerts will be distributed in real-time to brokers to benchmark classification algorithms. The ELAsTiCC uses the v.1.7 cadence strategy from op$\_$sims. A single detection is based on the DIA performance from DC2. Each light curve include photometric noise using Poisson noise that includes the equivalent area, background noise per unit area, sky and CCD read noise. Most importantly, the ELAsTiCC light curves simulate force photometry alerts which we recommend all time series features to be calculated upon. 
 
-
- Here we present two classes of periodic sources: RR Lyrae and eclipsing binaries. Both RRL's and EB's represent both the extrema of simple and complex periodic sources that will throughly test the underlying ability of the periodogram to find the correct period. Currently, the eclipsing binary sample from ELAsTiCC only contains a few hundred simulated binaries. To maximize the use different eclipsing binary stars sampled at different phases, each light curve over a three year photometric history is sampled at some random time and ensures that the maximum baseline is less than 12 months. 
- 
- 
-A detailed Jupyter notebook interacting and fetching the ELAsTiCC light curves can be found here. 
+Here we present two classes of periodic sources: RR Lyrae (RRL) and eclipsing binaries (EB). Both RRL's and EB's represent both the extrema of simple and complex periodic sources that will throughly test the underlying ability of the periodogram to find the correct period. Currently, the eclipsing binary sample from ELAsTiCC that was generated from open-source Python package (ELISa). the only contains a few hundred simulated binaries. To maximize the use different eclipsing binary stars sampled at different phases, each light curve over a three year photometric history is sampled at some random time and ensures that the maximum baseline is less than 12 months. A detailed Jupyter notebook interacting and fetching the ELAsTiCC light curves can be found here. 
 
 \begin{figure*}
   \includegraphics[width=0.9\textwidth]{figures/lightcurve_demo.pdf}
@@ -78,7 +72,6 @@ A detailed Jupyter notebook interacting and fetching the ELAsTiCC light curves c
 
 \section{Injection-Recovery Testing}
 We consider two models of periodic phenomena: RR lyrae and eclipsing binaries ranging from a periods of 0.2 days to 10 days. All computations of the floating-mean Lomb-Scargle periodogram are using the out-of-box open-source Python package `gatspy` \citet{VanderPlas:VP2015}. 
-
 
 
 \subsection{Single Band Lomb-Scargle Periodogram}
@@ -133,6 +126,9 @@ Next, we test the multi-band Lomb-Scargle periodogram implementation adapted on 
 \item Run time as a function of Fourier components (single band)
 \item Run time as a function of Fourier components (multi-band)
 \item Run time as a function of Nyquist frequency and oversampling factor
+\item Discussion on how many periodic sources we expect to find
+\item What recommendations do we make from number of detections and numbers of detections per filter
+\item Test new Astropy multi-band Lomb Scargle implementation, on timing analysis and results 
 \end{itemize}
 
 
