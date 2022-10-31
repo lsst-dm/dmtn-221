@@ -135,7 +135,21 @@ In this section we discuss possible metrics for peak significance. One challenge
 
 \subsection{Timing Analysis}
 
-In this final section we discuss the average run time per method mentioned above. 
+% Introduction
+In this section we bench mark the average run time of the Lomb-Scargle periodogram implementation from gatspy. The balancing act of high periodocity accuracy while confining the calculations within the AP timeframe is a challenging act. While coarse period grids  and complex models can achieve more accurate periods, this will not be possible to do with AP. Instead, in this section we will explore the lower limit of run time while tweaking the overall period grid coarseness and model complexity.
+
+The current gatspy, which is a pure Python based implementation of the Lomb-Scargle periodogram, scales as  $\mathcal{O}$[N] algorithm for small N and becomes $\mathcal{O}$[N$^2$] at larger trial periods. The unique rapid calculation of the periodogram emerges from the efficient use of linear algebraic operations. The average run time also depends on the number of detections and model complexity which we will explore in this section. For our run time analysis we will consider both a single-band and multi-band case for the RR Lyrae only since the run time is not a function of the underlying signal. 
+
+% Discussion of single-band 
+
+
+% Discussion of multi-band
+
+
+% Conclusions & recommendations  
+
+
+
 
 \begin{figure*}
   \includegraphics[width=0.8\textwidth]{figures/run_time_analysis.pdf}
