@@ -65,7 +65,7 @@ Previous work from \cite{2012AJ....144....9O} demonstrate the concept of injecti
 \section{Synthetic Light Curves}
 In this study we use the training set Extended LSST Astronomical Time-series Classification Challenge (ELAsTiCC) light curves with a 12 month history that will best mimic the calculations performed for AP. In short, ELAsTiCC is an end-to-end real-time pipeline for generating mock photometric alerts at the expected Legacy Survey of Time and Space (LSST) rate. The photometric alerts will be distributed in real-time to brokers to benchmark classification algorithms. The ELAsTiCC uses the v.1.7 cadence strategy from op$\_$sims. A single detection is based on the DIA performance from DC2. Each light curve include photometric noise using Poisson noise that includes the equivalent area, background noise per unit area, sky and CCD read noise. Most importantly, the ELAsTiCC light curves simulate force photometry alerts which we recommend all time series features to be calculated upon. 
 	
-	Here we present two classes of periodic sources: RR Lyrae (RRL) and eclipsing binaries (EB). Both RRL's and EB's represent both the extrema of simple and complex periodic sources that will throughly test the underlying ability of the periodogram to find the correct period. Currently, the eclipsing binary sample from ELAsTiCC that was generated from open-source Python package (ELISa). the only contains a few hundred simulated binaries. To maximize the use different eclipsing binary stars sampled at different phases, each light curve over a three year photometric history is sampled at some random time and ensures that the maximum baseline is less than 12 months. In Figure \ref{fig:light_curve_demo} we show the typical multi-band AP light curve sampled from ELAsTiCC with uncertainties. A detailed Jupyter notebook interacting and fetching the ELAsTiCC light curves can be found here. 
+	Here we present two classes of periodic sources: RR Lyrae (RRL) and eclipsing binaries (EB). Both RRL's and EB's represent both the extrema of simple and complex periodic sources that will throughly test the underlying ability of the periodogram to find the correct period. Currently, the eclipsing binary sample from ELAsTiCC that was generated from open-source Python package Eclipsing binary Learning and Interactive System (ELISa). the only contains a few hundred simulated binaries. To maximize the use different eclipsing binary stars sampled at different phases, each light curve over a three year photometric history is sampled at some random time and ensures that the maximum baseline is less than 12 months. In Figure \ref{fig:light_curve_demo} we show the typical multi-band AP light curve sampled from ELAsTiCC with uncertainties. A detailed Jupyter notebook interacting and fetching the ELAsTiCC light curves can be found here. 
 
 \begin{figure*}
   \includegraphics[width=0.9\textwidth]{figures/lightcurve_demo.pdf}
@@ -118,13 +118,14 @@ First is the base Fourier component that describes the overall \textbf{shared} v
   \caption{Multi-band injection-recovery test for 5000 RRL (top row) and EB (bottom row). Each column title includes the number of Fourier base and band terms used to compute the Lomb-Scargle periodogram. Additionally we color code each recovered period by the number of detections. The overlaid curved lines represent the n=1 aliasing, while the straight lines represent the n=1,2 harmonics.}
 \end{figure*}
 
-
 \subsection{Period Grid}
-The LSST will be search for periodic phenomena across both short and long timescales. Another challenge is choosing the right trial period grid with separations that can lead to successful period finding within AP. Inevitably, large searches in period space without an a priori will require an heuristic approach to generating an appropriate period grid that will account for the light curve characteristics.
+The LSST will be search for periodic phenomena across both short and long timescales. Another challenge is choosing the right trial period grid with separations that can lead to successful period finding within AP. The periodogram is full of local minima and maxima, thus in practice the global maximum, which corresponds usually to the period with the highest power, is searched through 
+
+Inevitably, large searches in period space without an a priori will require an heuristic approach to generating an appropriate period grid that will account for the light curve characteristics. 
 
 For this study, we use a heuristic frequency grid generator adapted in gatspy that uses the light curve parameters to estimate the appropriate frequency grid length and separation. Generally, the frequency separation can be approximated using the duration of the light curve, including some sampling constant ($\mathcal{O}$):
 \begin{equation}
-\delta f = \frac{1}{t_{max} - t_{min}) \times \mathcal{O}}
+\delta f = \frac{1}{(t_{max} - t_{min}) \times \mathcal{O}}
 \end{equation}
 
 and the total number of computed periods as a function of the Nyquist frequency ($F_{nyquist}$), and number of detections (N$_{det}$): 
@@ -145,7 +146,7 @@ In this section we discuss possible metrics for peak significance. One challenge
 \end{figure*}
 
 
-
+% Summary: Timing analysis will include details on bench marking the run time of each frequency grid and model as a function of number of detections and period accuracy.
 \subsection{Timing Analysis}
 
 % Introduction
@@ -155,7 +156,7 @@ The current gatspy, which is a pure Python based implementation of the Lomb-Scar
 
 % Discussion of single-band 
 
-
+ 
 % Discussion of multi-band
 
 
