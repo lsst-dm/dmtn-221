@@ -155,7 +155,7 @@ In this section we bench mark the average run time of the Lomb-Scargle periodogr
 The current gatspy, which is a pure Python based implementation of the Lomb-Scargle periodogram, scales as  $\mathcal{O}$[N] algorithm for small N and becomes $\mathcal{O}$[N$^2$] at larger trial periods. The unique rapid calculation of the periodogram emerges from the efficient use of linear algebraic operations. The average run time also depends on the number of detections and model complexity which we will explore in this section. For our run time analysis we will consider both a single-band and multi-band case for the RR Lyrae only since the run time is not a function of the underlying signal. 
 
 % Discussion of single-band 
-
+We first measure the effects of run time on the single-band RRL photometry in the $r$-band filter. In practice, this would work for any given filter given the rolling cadence of LSST. For each light curve, we run the Lomb-Scargle periodogram 10 times per light curve, and compute the median run time. Additionally, we run this for each combination of oversampling factor, Nyquist frequency, and Fourier components. In Figure \ref{fig:run_time_single}, we display the results for the single-band photometry. We also color code the average fractional error per light curve iteration. 
 
 
  
@@ -163,6 +163,7 @@ The current gatspy, which is a pure Python based implementation of the Lomb-Scar
   \includegraphics[width=0.8\textwidth]{figures/singleRUN_LSP_RRL.pdf}
   \centering 
   \caption{Average run time per number of $r$ light curve detections. Each column represents the model complexity of each multi-band Lomb Scargle periodogram. Within each panel, we use a heuristically determined period grid by varying the oversampling factor and the the Nyquist frequency.  Finally, for each successive run we color code the fractional error compared from the true period.}
+  \label{fig:run_time_single}
 \end{figure*}
 
 % Discussion of multi-band
