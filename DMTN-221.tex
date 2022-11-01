@@ -112,14 +112,27 @@ Next, we test the multi-band Lomb-Scargle periodogram implementation adapted on 
 First is the base Fourier component that describes the overall \textbf{shared} variability, and second is the per band component that is modeled by the residuals of the base component with each photometric filter. In practice, a larger configuration of base and band components can lead to the estimation of more complex light curves. \textit{Gatspy} automatically determines through the use of least-squares minimization the scalar parameters from the above equation. 
 
 
-
-
 \begin{figure*}
   \includegraphics[width=0.9\textwidth]{figures/multi_lsp_rectest.pdf}
   \centering 
   \caption{Multi-band injection-recovery test for 5000 RRL (top row) and EB (bottom row). Each column title includes the number of Fourier base and band terms used to compute the Lomb-Scargle periodogram. Additionally we color code each recovered period by the number of detections. The overlaid curved lines represent the n=1 aliasing, while the straight lines represent the n=1,2 harmonics.}
 \end{figure*}
 
+
+\subsection{Period Grid}
+The LSST will be search for periodic phenomena across both short and long timescales. Another challenge is choosing the right trial period grid with separations that can lead to successful period finding within AP. Inevitably, large searches in period space without an a priori will require an heuristic approach to generating an appropriate period grid that will account for the light curve characteristics.
+
+For this study, we use a heuristic frequency grid generator adapted in gatspy that uses the light curve parameters to estimate the appropriate frequency grid length and separation. Generally, the frequency separation can be approximated using the duration of the light curve, including some sampling constant ($\mathcal{O}$):
+\begin{equation}
+\delta f = \frac{1}{t_{max} - t_{min}) \times \mathcal{O}}
+\end{equation}
+
+and the total number of computed periods as a function of the Nyquist frequency ($F_{nyquist}$), and number of detections (N$_{det}$): 
+\begin{equation}
+N_{P} = int \bigg{(} \frac{1}{2} \mathcal{O} F_{nyquist} N_{det} \bigg{)}
+\end{equation}
+
+In later sections we evaluate for each frequency grid the period accuracy computed for the ELAsTiCC light curves.
 
 \subsection{Peak Significance Metric}
 
