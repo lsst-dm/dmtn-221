@@ -84,6 +84,9 @@ We consider two models of periodic phenomena: RR lyrae and eclipsing binaries ra
 We first consider the case of single-band detections from AP. Here we aim to answer if the 12 month AP history in a single-band light curve is enough to recover periods. We consider the canonical floating mean to estimate the periodogram of 10,000 alert light curves in the $r$-band for three Fourier component modes. In Figure \ref{fig:single_band_lsp} we show the results of this analysis for RRL's (rop row) and EB's (bottom row). For each light curve model, we randomly sample a light curve and compute the Lomb-Scargle periodogram using a heuristic period grid with an oversampling factor of 2 and Nyquist frequency of 30 ($\sim$0.03 days) to account for the fast periodic phenomena. We extrapolated the highest power period from the periodogram and compare it to the true period. In Figure \ref{fig:single_band_lsp} we also include the number of $r$-band detections for each light curve. As expected, we did not find any preference of an optical single-band photometric filter that outperformed the others. While the RR Lyrae exhibit at larger Fourier modeling modes more aliasing, overall the recovery fraction of correctly identified periods is larger compared to the EBs. For both light curve models, we consistently found in each model configuration that the average correctly identified period coincides with a larger number of detections. Overall we find consistent results for the RR Lyrae done by a similar analysis by \citet{VanderPlas:VP2015}. The true challenge of this approach comes from the more complex light curves such as the EBs. 
 
 
+On average, there will be 30 detections in each band per 12 month light curve history. This entails that the majority of AP light curves will likely be too undersampled in order to compute a high confidence periodicity. 
+
+
 % Todo
 \begin{itemize}
 \item Injected vs recovered period plots eclipsing binaries and RRL
@@ -133,7 +136,7 @@ and the total number of computed periods as a function of the Nyquist frequency 
 N_{P} = int \bigg{(} \frac{1}{2} \mathcal{O} F_{nyquist} N_{det} \bigg{)}
 \end{equation}
 
-In later sections we evaluate for each frequency grid the period accuracy computed for the ELAsTiCC light curves.
+Intuitively, the Nyquist frequency pushes the minimum starting frequency to smaller periods, while the oversampling factor will increase the maximum frequency grid and overall increase the coarseness of the grid. In later sections we evaluate for each frequency grid the period accuracy computed for the ELAsTiCC light curves. 
 
 \subsection{Peak Significance Metric}
 
@@ -155,7 +158,7 @@ In this section we bench mark the average run time of the Lomb-Scargle periodogr
 The current gatspy, which is a pure Python based implementation of the Lomb-Scargle periodogram, scales as  $\mathcal{O}$[N] algorithm for small N and becomes $\mathcal{O}$[N$^2$] at larger trial periods. The unique rapid calculation of the periodogram emerges from the efficient use of linear algebraic operations. The average run time also depends on the number of detections and model complexity which we will explore in this section. For our run time analysis we will consider both a single-band and multi-band case for the RR Lyrae only since the run time is not a function of the underlying signal. 
 
 % Discussion of single-band 
-We first measure the effects of run time on the single-band RRL photometry in the $r$-band filter. In practice, this would work for any given filter given the rolling cadence of LSST. For each light curve, we run the Lomb-Scargle periodogram 10 times per light curve, and compute the median run time. Additionally, we run this for each combination of oversampling factor, Nyquist frequency, and Fourier components. In Figure \ref{fig:run_time_single}, we display the results for the single-band photometry. We also color code the average fractional error per light curve iteration. 
+We first measure the effects of run time on the single-band RRL photometry in the $r$-band filter. In practice, this would work for any given filter given the rolling cadence of LSST. For each light curve, we run the Lomb-Scargle periodogram 10 times per light curve, and compute the median run time. Additionally, we run this for each combination of oversampling factor, Nyquist frequency, and Fourier components. In Figure \ref{fig:run_time_single}, we display the results for the single-band photometry. We also color code the average fractional error per light curve iteration. As mentioned in the single-band Lomb-Scargle method, by design will be poorly sampled especially within the 12 month history. As expected, due to the sparse sampled light curves, the majority of light curves scale linearly with number of detections, and have average run times below one second. 
 
 
  
