@@ -114,12 +114,21 @@ Next, we test the multi-band Lomb-Scargle periodogram implementation adapted on 
 
 First is the base Fourier component that describes the overall \textbf{shared} variability, and second is the per band component that is modeled by the residuals of the base component with each photometric filter. In practice, a larger configuration of base and band components can lead to the estimation of more complex light curves. \textit{Gatspy} automatically determines through the use of least-squares minimization the scalar parameters from the above equation. 
 
-
 \begin{figure*}
   \includegraphics[width=0.9\textwidth]{figures/multi_lsp_rectest.pdf}
   \centering 
   \caption{Multi-band injection-recovery test for 5000 RRL (top row) and EB (bottom row). Each column title includes the number of Fourier base and band terms used to compute the Lomb-Scargle periodogram. Additionally we color code each recovered period by the number of detections. The overlaid curved lines represent the n=1 aliasing, while the straight lines represent the n=1,2 harmonics.}
 \end{figure*}
+
+Figure for comparing each method
+
+\begin{figure*}
+  \includegraphics[width=0.9\textwidth]{figures/multi_vs_single_rec_frac.pdf}
+  \centering 
+  \caption{Multi-band injection-recovery test for 5000 RRL (top row) and EB (bottom row). Each column title includes the number of Fourier base and band terms used to compute the Lomb-Scargle periodogram. Additionally we color code each recovered period by the number of detections. The overlaid curved lines represent the n=1 aliasing, while the straight lines represent the n=1,2 harmonics.}
+\end{figure*}
+
+
 
 \subsection{Period Grid}
 The LSST will be search for periodic phenomena across both short and long timescales. Another challenge is choosing the right trial period grid with separations that can lead to successful period finding within AP. The periodogram is full of local minima and maxima, thus in practice the global maximum, which corresponds usually to the period with the highest power, is searched through 
@@ -142,11 +151,18 @@ Intuitively, the Nyquist frequency pushes the minimum starting frequency to smal
 
 In this section we discuss possible metrics for peak significance. One challenge when computing the periodogram for billions of sources is the inevitability of spurious period detections, effects of harmonics, and aliasing. One diagnostic used in the literature is the False Alarm Probability (FAP) of a given peak in the power spectrum. The FAP measures the probability uncertainty associated with the selected peak under the null hypothesis.
 
+% What is the FAP we want to measure here? Bootstraping is a proxy to FAP... 
+
 \begin{figure*}
   \includegraphics[width=0.8\textwidth]{figures/fap_approximation_mlsp.pdf}
   \centering 
   \caption{Multi-band FAP rate computed via the Baluev approximation compared to a $2\sigma$ bootstrap approach for 5000 RRL and EB alert light curves. For each light curve we also color code the total number of $ugrizy$ detections.}
 \end{figure*}
+
+We will be using the approximation of the Baluev form:
+\begin{equation}
+P_{FAP} \approx \frac{\Gamma((N-1) / 2)}{\Gamma((N-2) / 2)} \sqrt{4 \pi \operatorname{var}\left(t_i\right)} f_{\mathrm{u}}\left(1-z_{\mathrm{obs}}\right)^{\frac{N-4}{2}} \sqrt{z_{\mathrm{obs}}}
+\end{equation}
 
 
 % Summary: Timing analysis will include details on bench marking the run time of each frequency grid and model as a function of number of detections and period accuracy.
