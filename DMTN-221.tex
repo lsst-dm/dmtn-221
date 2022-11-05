@@ -56,7 +56,7 @@ The baselined timeseries features to be computed in Alert Production include a L
 
 
 \section{Motivation}
-The characterization of periodicity from time-series is a fundamental constraint to numerous astrophysical applications. Phenomenologically, estimating the periodicity and its significance can shed light on stellar pulsation theory \citep{Antonello:Antonello81}, distance estimation and mapping of the Galaxy through the period-luminosity relationship \citep{Skowron:Skowron2019}, constraint fundamental parameters of stellar binaries \citep{Farinella:Farinella1979} and stellar rotation \citep{Walkowicz:Walkowicz13}. In the recent decade, the use of periodicity has also been extensively used as a feature to classify variable phenomena \citep{Richards:R13} across the HR diagram. 
+The characterization of periodicity from time-series is a fundamental constraint to numerous astrophysical applications. Phenomenologically, estimating the periodicity and its significance can shed light on stellar pulsation theory \citep{Antonello:Antonello81}, distance estimation and mapping of the Galaxy through the period-luminosity relationship \citep{Skowron:Skowron2019}, constraint fundamental parameters of stellar binaries \citep{Farinella:Farinella1979} and stellar rotation \citep{Walkowicz:Walkowicz13}. In the recent decade, the use of periodicity has also been extensively used as a feature to classify variable phenomena \citep{Richards:R13} across the Hertzsprung-Russell diagram. 
 
 
 Previous work from \cite{2012AJ....144....9O} demonstrate the concept of injection-recovery test for synthetically generated RR Lyrae templates from SDSS using the op$\_$sim version 1.29 cadence strategy. However, no study to date has demonstrated the recovery period distribution of more complex periodic phenomena (i.e eclipsing binaries, quasi-periodic AGN). Here we perform an end-to-end, injection and recovery analysis for multi-band time series to asses the statistical significance of period finding in the context of AP. 
@@ -129,7 +129,6 @@ Figure for comparing each method
 \end{figure*}
 
 
-
 \subsection{Period Grid}
 The LSST will be search for periodic phenomena across both short and long timescales. Another challenge is choosing the right trial period grid with separations that can lead to successful period finding within AP. The periodogram is full of local minima and maxima, thus in practice the global maximum, which corresponds usually to the period with the highest power, is searched through 
 
@@ -149,15 +148,28 @@ Intuitively, the Nyquist frequency pushes the minimum starting frequency to smal
 
 \subsection{Peak Significance Metric}
 
-In this section we discuss possible metrics for peak significance. One challenge when computing the periodogram for billions of sources is the inevitability of spurious period detections, effects of harmonics, and aliasing. One diagnostic used in the literature is the False Alarm Probability (FAP) of a given peak in the power spectrum. The FAP measures the probability uncertainty associated with the selected peak under the null hypothesis.
+One imminent challenge beside choosing the right period grid, and model complexity is the reported period significance. It is inevitable that the AP periodic pipeline will likely report spurious periods, and both harmonics and aliases of the underlying period of the source. In this section we explore empirical metrics to evaluate peak significance within the AP time frame. One common diagnostic used in the literature is the False Alarm Probability (FAP) of a given peak in the power spectrum. The FAP measures the probability uncertainty associated with the selected peak under the null hypothesis. 
 
-% What is the FAP we want to measure here? Bootstraping is a proxy to FAP... 
+% Bootstraping as a mechanism 
+Given the absence of a true analytic solution to the Lomb-Scargle FAP, most methods rely on computational approaches such as bootstrapping. Bootstrapping by virtue is computationally expensive. For example, a 1$\%$ false-alarm rate would require 1000 bootstraps per light curve. Given the computational resources of AP and expected number of periodic sources, bootstrapping is likely not feasible for AP.
+
+Furthermore, there does not a exist an analytic solution to the Lomb-Scargle FAP.
+
+
+ More recently, \citet{Baluev:Baluev2008}, 
 
 \begin{figure*}
   \includegraphics[width=0.8\textwidth]{figures/fap_approximation_mlsp.pdf}
   \centering 
   \caption{Multi-band FAP rate computed via the Baluev approximation compared to a $2\sigma$ bootstrap approach for 5000 RRL and EB alert light curves. For each light curve we also color code the total number of $ugrizy$ detections.}
 \end{figure*}
+
+
+
+
+...implements the approximation proposed by Baluev 2008, which employs extreme value statistics to compute an upper bound of the false alarm probability for the alias-free case.
+
+
 
 We will be using the approximation of the Baluev form:
 \begin{equation}
@@ -189,10 +201,8 @@ We first measure the effects of run time on the single-band RRL photometry in th
 
 % Conclusions & recommendations  
 
-
-
 \begin{figure*}
-  \includegraphics[width=0.8\textwidth]{figures/run_time_analysis.pdf}
+  \includegraphics[width=0.8\textwidth]{figures/multi-lsp-runs.pdf}
   \centering 
   \caption{Average run time per number of $ugrizy$ light curve detections. Each column represents the model complexity of each multi-band Lomb Scargle periodogram. Within each panel, we use a heuristically determined period grid by varying the oversampling factor and the the Nyquist frequency.  Finally, for each successive run we color code the fractional error compared from the true period.}
 \end{figure*}
