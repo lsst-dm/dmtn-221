@@ -109,17 +109,16 @@ We first consider the case of the canonical single-band detections from AP. In t
 We consider the canonical floating-mean Lomb-Scargle to estimate the periodogram of $10^4$ alert light curves in the \textit{r}-band for three Fourier component modes. For the average LSST field, our results are independent of the selected photometric filter due the uniformity of sky coverage from all filters. In Figure \ref{fig:single_band_lsp} we show the results of this analysis for RRL's (rop row) and EB's (bottom row). For each light curve model, we randomly sample a light curve and compute the Lomb-Scargle periodogram using a heuristic period grid with an oversampling factor of 2 and Nyquist frequency of 30 ($\sim$0.03 days) to account for the fast periodic phenomena. We extrapolated the highest power period from the periodogram and compare it to the true period. In Figure \ref{fig:single_band_lsp} we also include the number of \textit{r}-band detections for each light curve. We note that we did not find any reliable periods beyond 5 days for the eclipsing binaries. This is likely due to the fact of the small sample size beyond 5 days. Since we are re-sampling the same underlying models it is possible that the light curve re-sampling is not aduete enough to identify correct large periods. As expected, we did not find any preference of an optical single-band photometric filter that outperformed the others. While the RR Lyrae exhibit at larger Fourier modeling modes more aliasing, overall the recovery fraction of correctly identified periods is larger compared to the EBs. For both light curve models, we consistently found in each model configuration that the average correctly identified period coincides with a larger number of detections. Overall we find consistent results for the RR Lyrae done by a similar analysis by \citet{VanderPlas:VP2015}. The true challenge of this approach comes from the more complex light curves such as the EBs with more phase variation. 
 
 \begin{figure*}
-  \includegraphics[width=0.8\textwidth]{figures/singleband_lsp.pdf}
+  \includegraphics[width=0.7textwidth]{figures/singleband_lsp.pdf}
   \centering 
   \caption{We show the injected (true period) versus recovered highest peak in the periodogram for a sample of 1000 $r$-band detections from RR lyrae and eclipsing binaries. Each column shows the period recovery for N=1 to N=3 Fourier components when computing the Lomb-Scargle periodogram.}
   \label{fig:single_band_lsp}
 \end{figure*}
 
 % Conclusions regarding the single-band Lomb Scargle
-On average, there will be 30 detections in each photometric band per 12 month light curve history. Given the sampling rate of LSST per pointing, this entails that the majority of single-band AP light curves would be too undersampled in order to compute a high confidence periodicity. Even with a low completeness, computing the Lomb-Scargle periodogram on single-band time series alerts, this will likely outperform any other known survey due to the large survey volume. Single-band Lomb-Scargle implementations are also faster by a factor of $\sim$5 due to the lower average number of detections per filter. We conclude that the single-band Lomb-Scargle misses by a higher margin the underlying true period due the small light curve photometric history. We now turn our attention to the multi-band Lomb-Scargle.
+On average, there will be 30 detections in each photometric band per 12 month light curve history. Given the sampling rate of LSST per pointing, this entails that the majority of single-band AP light curves would be too undersampled in order to compute a high confidence periodicity. Even with a low completeness, computing the Lomb-Scargle periodogram on single-band time series alerts, this will likely outperform any other known survey due to the large survey volume. The single-band Lomb-implementation are also faster by a factor of 5 due to the lower average number of detections per filter. We conclude that the single-band Lomb-Scargle misses by a higher margin the underlying true period due the small light curve photometric history. We now turn our attention to the multi-band Lomb-Scargle.
 
 \subsection{Multi-Band Lomb-Scargle Periodogram}
-
 Next, we test the multi-band Lomb-Scargle periodogram implementation adapted in \textsc{gatspy} to our ELAsTiCC light curves. Given the rich multi-band alert detections LSST will deliver, we expect that that conventional period finding algorithms to do better due to an increase of number of total detections. In short, the multi-band Lomb-Scargle periodogram we will be considering for this study can be written out with two components that use implemented in \textsc{gatspy} : 
 
 \begin{equation}
@@ -157,9 +156,6 @@ Furthermore, there does not a exist an analytic solution to the Lomb-Scargle FAP
   \centering 
   \caption{Multi-band FAP rate computed via the Baluev approximation compared to a $2\sigma$ bootstrap approach for 5000 RRL and EB alert light curves. For each light curve we also color code the total number of $ugrizy$ detections.}
 \end{figure*}
-
-
-
 
 ...implements the approximation proposed by Baluev 2008, which employs extreme value statistics to compute an upper bound of the false alarm probability for the alias-free case.
 
