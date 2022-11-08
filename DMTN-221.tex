@@ -66,16 +66,14 @@ In this study we use the training set Extended LSST Astronomical Time-series Cla
 	
 In this analysis, we present two classes of periodic variable sources: RR Lyrae (RRL) and eclipsing binaries (EB). Both RRL's and EB's represent the extrema of simple and complex periodic sources that will throughly test the underlying ability of the periodogram to find the correct period. While other quasi-periodic sources, such as AGN, might be of importance, in this study we aim to answer if computing the periodogram on periodic phenomena is possible.  
 
-We note one small drawback using the ELAsTiCC training is the relatively small sample size (N=360) and low signal-to-noise ratio for the eclipsing binaries. In Section \ref{sec:limitations} we discuss the implications of the SNR of the EB light curves.To maximize the use different eclipsing binary stars sampled at different phases, each light curve over a three year photometric history is sampled at some random time and ensures that the maximum baseline is less than 12 months. While a small EB sample size limits the search for a larger distribution in periodicities, it remains nonetheless useful to see the periodicity recovery rates at different sampling phases. In Figure \ref{fig:period_distributions}, we show the underlying injected period distribution or both periodic classes.
+We note one small drawback using the ELAsTiCC training is the relatively small sample size (N=360) and low signal-to-noise ratio for the eclipsing binaries. In Section \ref{sec:limitations} we discuss the implications of the SNR of the EB light curves.To maximize the use different eclipsing binary stars sampled at different phases, each light curve over a three year photometric history is sampled at some random time and ensures that the maximum baseline is less than 12 months. While a small EB sample size limits the search for a larger distribution in periodicities, it remains nonetheless useful to see the periodicity recovery rates at different sampling phases. In Figure \ref{fig:period_distributions}, we show the underlying injected period distribution or both periodic classes. Finally, in Figure \ref{fig:light_curve_demo} we show the typical multi-band AP light curve sampled from ELAsTiCC with uncertainties.
 
 \begin{figure*}
-  \includegraphics[width=0.8\textwidth]{figures/period_distribution.pdf}
+  \includegraphics[width=0.6\textwidth]{figures/period_distribution.pdf}
   \centering 
   \caption{True period distribution from the ELAsTiCC training set.}
    \label{fig:period_distributions}
 \end{figure*}
-
-Finally, in Figure \ref{fig:light_curve_demo} we show the typical multi-band AP light curve sampled from ELAsTiCC with uncertainties.
 
 \begin{figure*}
   \includegraphics[width=0.9\textwidth]{figures/lightcurve_demo.pdf}
@@ -86,12 +84,31 @@ Finally, in Figure \ref{fig:light_curve_demo} we show the typical multi-band AP 
 
 
 \section{Injection-Recovery Testing}
-We consider two models of periodic phenomena: RR lyrae and eclipsing binaries ranging from a periods of 0.2 days to 10 days. All computations of the floating-mean Lomb-Scargle periodogram are using the open-source Python package `gatspy` \citet{VanderPlas:VP2015}. 
+In this section we discuss the periodicity recovery rate for injected RR Lyrae and eclipsing binaries in both scenarios of single-band and multi-band light curves. All computations of the periodogram henceforth will be the floating-mean Lomb-Scargle periodogram algorithm that is implemented from \textsc{gatspy} \citet{VanderPlas:VP2015}. 
 
+
+\subsection{Period Grid}
+The LSST will be search for periodic phenomena across both short and long timescales. The first challenge when computing periodograms in the context of AP is choosing the right trial period grid with separations that can lead to successful period finding. The periodogram is full of local minima and maxima, thus in practice the global maximum, which corresponds usually to the period with the highest power, is searched through a brute force period grid. High resolution period grids can also be very computationally expensive that is not feasible in the 60 second data latency of AP. 
+
+Inevitably, large searches in period space without an a priori will require an heuristic approach to generating an appropriate period grid that will account for the light curve characteristics. For this study, we use a heuristic frequency grid generator adapted in \textsc{gatspy} that uses the light curve parameters to estimate the appropriate frequency grid length and separation. Unfortunately, for sparsely sampled light curves there does not exist a straightforward approach to finding the optimum frequency grid. It is inevitable that some light curves will either require coarser or finer frequency grids. 
+Generally, the frequency separation that we will be using for thus study can be approximated using the duration of the light curve, including some sampling constant ($\mathcal{O}$) and the total number of computed periods as a function of the Nyquist factor ($F_{nyquist}$), and number of detections (N$_{det}$): 
+
+\begin{equation}
+\delta f = \frac{1}{(t_{max} - t_{min}) \times \mathcal{O}}
+\end{equation}
+
+\begin{equation}
+N_{P} = int \bigg{(} \frac{1}{2} \mathcal{O} F_{nyquist} N_{det} \bigg{)}
+\end{equation}
+
+Intuitively, the Nyquist frequency pushes the minimum starting frequency to smaller periods, while the oversampling factor will increase the maximum frequency grid and overall increase the coarseness of the grid. In later sections we evaluate for each frequency grid the period accuracy computed for the ELAsTiCC light curves. 
 
 \subsection{Single Band Lomb-Scargle Periodogram}
 
-We first consider the case of single-band detections from AP. Here we aim to answer if the 12 month AP history in a single-band light curve is enough to recover periods. We consider the canonical floating mean to estimate the periodogram of 10,000 alert light curves in the $r$-band for three Fourier component modes. In Figure \ref{fig:single_band_lsp} we show the results of this analysis for RRL's (rop row) and EB's (bottom row). For each light curve model, we randomly sample a light curve and compute the Lomb-Scargle periodogram using a heuristic period grid with an oversampling factor of 2 and Nyquist frequency of 30 ($\sim$0.03 days) to account for the fast periodic phenomena. We extrapolated the highest power period from the periodogram and compare it to the true period. In Figure \ref{fig:single_band_lsp} we also include the number of $r$-band detections for each light curve. As expected, we did not find any preference of an optical single-band photometric filter that outperformed the others. While the RR Lyrae exhibit at larger Fourier modeling modes more aliasing, overall the recovery fraction of correctly identified periods is larger compared to the EBs. For both light curve models, we consistently found in each model configuration that the average correctly identified period coincides with a larger number of detections. Overall we find consistent results for the RR Lyrae done by a similar analysis by \citet{VanderPlas:VP2015}. The true challenge of this approach comes from the more complex light curves such as the EBs. 
+We first consider the case of single-band detections from AP. Here we aim to answer if the 12 month AP history in a single-band light curve is enough to recover periods. We consider the canonical floating mean to estimate the periodogram of 10,000 alert light curves in the $r$-band for three Fourier component modes. 
+
+
+In Figure \ref{fig:single_band_lsp} we show the results of this analysis for RRL's (rop row) and EB's (bottom row). For each light curve model, we randomly sample a light curve and compute the Lomb-Scargle periodogram using a heuristic period grid with an oversampling factor of 2 and Nyquist frequency of 30 ($\sim$0.03 days) to account for the fast periodic phenomena. We extrapolated the highest power period from the periodogram and compare it to the true period. In Figure \ref{fig:single_band_lsp} we also include the number of $r$-band detections for each light curve. As expected, we did not find any preference of an optical single-band photometric filter that outperformed the others. While the RR Lyrae exhibit at larger Fourier modeling modes more aliasing, overall the recovery fraction of correctly identified periods is larger compared to the EBs. For both light curve models, we consistently found in each model configuration that the average correctly identified period coincides with a larger number of detections. Overall we find consistent results for the RR Lyrae done by a similar analysis by \citet{VanderPlas:VP2015}. The true challenge of this approach comes from the more complex light curves such as the EBs. 
 
 
 On average, there will be 30 detections in each band per 12 month light curve history. This entails that the majority of AP light curves will likely be too undersampled in order to compute a high confidence periodicity. 
@@ -126,24 +143,6 @@ Figure for comparing each method
   \centering 
   \caption{Multi-band injection-recovery test for 5000 RRL (top row) and EB (bottom row). Each column title includes the number of Fourier base and band terms used to compute the Lomb-Scargle periodogram. Additionally we color code each recovered period by the number of detections. The overlaid curved lines represent the n=1 aliasing, while the straight lines represent the n=1,2 harmonics.}
 \end{figure*}
-
-
-\subsection{Period Grid}
-The LSST will be search for periodic phenomena across both short and long timescales. Another challenge is choosing the right trial period grid with separations that can lead to successful period finding within AP. The periodogram is full of local minima and maxima, thus in practice the global maximum, which corresponds usually to the period with the highest power, is searched through 
-
-Inevitably, large searches in period space without an a priori will require an heuristic approach to generating an appropriate period grid that will account for the light curve characteristics. 
-
-For this study, we use a heuristic frequency grid generator adapted in gatspy that uses the light curve parameters to estimate the appropriate frequency grid length and separation. Generally, the frequency separation can be approximated using the duration of the light curve, including some sampling constant ($\mathcal{O}$):
-\begin{equation}
-\delta f = \frac{1}{(t_{max} - t_{min}) \times \mathcal{O}}
-\end{equation}
-
-and the total number of computed periods as a function of the Nyquist frequency ($F_{nyquist}$), and number of detections (N$_{det}$): 
-\begin{equation}
-N_{P} = int \bigg{(} \frac{1}{2} \mathcal{O} F_{nyquist} N_{det} \bigg{)}
-\end{equation}
-
-Intuitively, the Nyquist frequency pushes the minimum starting frequency to smaller periods, while the oversampling factor will increase the maximum frequency grid and overall increase the coarseness of the grid. In later sections we evaluate for each frequency grid the period accuracy computed for the ELAsTiCC light curves. 
 
 \subsection{Peak Significance Metric}
 
