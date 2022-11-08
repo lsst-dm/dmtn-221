@@ -69,7 +69,7 @@ For this investigation, we use two classes of periodic variable sources: RR Lyra
 We note one small drawback using the ELAsTiCC training is the relatively small sample size (N=360) and low signal-to-noise ratio for the eclipsing binaries. In Section \ref{sec:limitations} we discuss the implications of the SNR of the EB light curves.To maximize the use different eclipsing binary stars sampled at different phases, each light curve over a three year photometric history is sampled at some random time and ensures that the maximum baseline is less than 12 months. While a small EB sample size limits the search for a larger distribution in periodicities, it remains nonetheless useful to see the periodicity recovery rates at different sampling phases. In Figure \ref{fig:period_distributions}, we show the underlying injected period distribution or both periodic classes. Finally, in Figure \ref{fig:light_curve_demo} we show the typical multi-band AP light curve sampled from ELAsTiCC with uncertainties.
 
 \begin{figure*}
-  \includegraphics[width=0.6\textwidth]{figures/period_distribution.pdf}
+  \includegraphics[width=0.5\textwidth]{figures/period_distribution.pdf}
   \centering 
   \caption{True period distribution from the ELAsTiCC training set.}
    \label{fig:period_distributions}
@@ -139,27 +139,26 @@ First is the base Fourier component that describes the overall shared variabilit
 \end{figure*}
 
 \subsection{Peak Significance Metric}
-One imminent challenge beside choosing the right period grid, and model complexity is the reported period significance. It is inevitable that the AP periodic pipeline will likely report spurious periods, and both harmonics and aliases of the underlying period of the source. The effects of aliasing and harmonics are typically identified by visual inspection of the phase folded light curves. In this section we explore empirical metrics to evaluate peak significance within the AP time frame. 
-
-One common diagnostic used in the literature is the False Alarm Probability (FAP) a given peak in the power spectrum. The FAP measures the probability uncertainty associated with the selected peak under the null hypothesis. Generally, the reported FAP for a specific period peak can be used to inform the user of its a trustworthy detection. A constraint on the number of detections and FAP is adequate to achieve a complete catalogue of periodic phenomena. 
+One imminent challenge beside choosing the right period grid, and model complexity is the reported period significance. It is inevitable that the AP periodic pipeline will likely report spurious periods, and both harmonics and aliases of the underlying period of the source. The effects of aliasing and harmonics are typically identified by visual inspection of the phase folded light curves. In this section we explore empirical metrics to evaluate peak significance within the AP time frame. One common diagnostic used in the literature is the False Alarm Probability (FAP) a given peak in the power spectrum. The FAP measures the probability uncertainty associated with the selected peak under the null hypothesis. Generally, the reported FAP for a specific period peak can be used to inform the user of its a trustworthy detection. A constraint on the number of detections and FAP is adequate to achieve a complete catalogue of periodic phenomena. 
 
 % Bootstraping as a mechanism 
-Given the absence of a true analytic solution to the Lomb-Scargle FAP, most methods rely on computational approaches such as bootstrapping. Bootstrapping by virtue is computationally expensive. For example, a 1$\%$ FAP rate would require 1000 bootstraps per light curve. By simply scaling the expected number of periodic sources to be found in each LSST pointing, we find that that the number of computed periodogram to likely exceed the computing resources of AP. Given the fast AP latency and number of periodic sources, a significant real-time bootstraping is likely not feasible for AP. 
-
-A more popular approach is to use parametric FAP estimators that asymptotically converge to similar distributions of bootstraping FAP approaches. A sophisticated approach suggested by \citet{Baluev:Baluev2008} which uses extreme value statistics to compute an upper bound of the false alarm probability for the alias-free case:
+Given the absence of a true analytic solution to the Lomb-Scargle FAP, most methods rely on computational approaches such as bootstrapping. Bootstrapping by virtue is computationally expensive. For example, a 1$\%$ FAP rate would require 1000 bootstraps per light curve. By simply scaling the expected number of periodic sources to be found in each LSST pointing, we find that that the number of computed periodogram to likely exceed the computing resources of AP. Given the fast AP latency and number of periodic sources, a significant real-time bootstraping is likely not feasible for AP. A more popular approach is to use parametric FAP estimators that asymptotically converge to similar distributions of bootstraping FAP approaches. A sophisticated approach suggested by \citet{Baluev:Baluev2008} which uses extreme value statistics to compute an upper bound of the false alarm probability for the alias-free case:
 
 \begin{equation}
 P_{FAP} \approx \frac{\Gamma((N-1) / 2)}{\Gamma((N-2) / 2)} \sqrt{4 \pi \operatorname{var}\left(t_i\right)} f_{\mathrm{u}}\left(1-z_{\mathrm{obs}}\right)^{\frac{N-4}{2}} \sqrt{z_{\mathrm{obs}}}
 \end{equation}
 
-The Baluev approximation has already been applied in other studies such as \citet{Suveges:Suveges15} and is suggested as a computationally inexpensive and reliable form to approximate the FAP. The more complex issue arrises from the complex mathematics that involve the derivation of the Baluev approximation for the multi-band Lomb-Scargle form. The derivation of such form is beyond the scope of this paper, and we suggest future studies to explore if such solution exists. For practical purposes, in our case we assume that the \citet{Baluev:Baluev2008}  form will hold true for the multi-band case, however we caution that the FAP estimates to possibly be underestimated.
+The Baluev approximation has already been applied in other studies such as \citet{Suveges:Suveges15} and is suggested as a computationally inexpensive and reliable form to approximate the FAP. The more complex issue arrises from the complex mathematics that involve the derivation of the Baluev approximation for the multi-band Lomb-Scargle form. The derivation of such form is beyond the scope of this paper, and we suggest future studies to explore if such solution exists. For practical purposes, in our case we assume that the \citet{Baluev:Baluev2008}  form will hold true for the multi-band case, however we caution that the overall FAP estimates to possibly be underestimated or overestimated. 
+
+
+To test whether the Baulev approximation holds true for the multi-band light curves we attempt to correlate a conventional bootstraping significance approach with the Baluev form. We begin with a 500 light curve sample of RRL and EB assuming a (N$_{base}$, N$_{band}$)=(2,1) model configuration. For each light curve, we run the multi-band Lomb-Scargle implementation 1000 times by sampling the light curve without replacement and extrapolate the maximum power for each iteration. Finally, we compute the ratio between the recovered power of the original Lomb-Scargle periodogram and the median bootstrapped power, which can be interpreted as a significance estimator. In Figure \ref{fig:boot}, we show the correlation between the Baluev and bootstrap approach for each variable class and color-coded by the number of \textit{ugrizy} detections. For each variable class, we ran a Pearson-R correlation test and found in both cases a a negative r-slope with p-value significance p$\ll$ 0.005.
 
 \begin{figure*}
   \includegraphics[width=0.8\textwidth]{figures/fap_approximation_mlsp.pdf}
   \centering 
   \caption{Multi-band FAP rate computed via the Baluev approximation compared to a $2\sigma$ bootstrap approach for 5000 RRL and EB alert light curves. For each light curve we also color code the total number of $ugrizy$ detections.}
+  \label{fig:boot}
 \end{figure*}
-
 
 
 % Summary: Timing analysis will include details on bench marking the run time of each frequency grid and model as a function of number of detections and period accuracy.
