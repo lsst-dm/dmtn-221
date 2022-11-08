@@ -146,7 +146,7 @@ One common diagnostic used in the literature is the False Alarm Probability (FAP
 % Bootstraping as a mechanism 
 Given the absence of a true analytic solution to the Lomb-Scargle FAP, most methods rely on computational approaches such as bootstrapping. Bootstrapping by virtue is computationally expensive. For example, a 1$\%$ FAP rate would require 1000 bootstraps per light curve. By simply scaling the expected number of periodic sources to be found in each LSST pointing, we find that that the number of computed periodogram to likely exceed the computing resources of AP. Given the fast AP latency and number of periodic sources, a significant real-time bootstraping is likely not feasible for AP. 
 
-A more popular approach is to use parametric FAP estimators that asymptotically converge to similar distributions of bootstraping FAP approaches. A sophisticated approach suggested by \citet{Baluev:Baluev2008} through the use of extreme value statistics derived an analytic FAP form:
+A more popular approach is to use parametric FAP estimators that asymptotically converge to similar distributions of bootstraping FAP approaches. A sophisticated approach suggested by \citet{Baluev:Baluev2008} which uses extreme value statistics to compute an upper bound of the false alarm probability for the alias-free case:
 
 \begin{equation}
 P_{FAP} \approx \frac{\Gamma((N-1) / 2)}{\Gamma((N-2) / 2)} \sqrt{4 \pi \operatorname{var}\left(t_i\right)} f_{\mathrm{u}}\left(1-z_{\mathrm{obs}}\right)^{\frac{N-4}{2}} \sqrt{z_{\mathrm{obs}}}
@@ -154,15 +154,11 @@ P_{FAP} \approx \frac{\Gamma((N-1) / 2)}{\Gamma((N-2) / 2)} \sqrt{4 \pi \operato
 
 The Baluev approximation has already been applied in other studies such as \citet{Suveges:Suveges15} and is suggested as a computationally inexpensive and reliable form to approximate the FAP. The more complex issue arrises from the complex mathematics that involve the derivation of the Baluev approximation for the multi-band Lomb-Scargle form. The derivation of such form is beyond the scope of this paper, and we suggest future studies to explore if such solution exists. For practical purposes, in our case we assume that the \citet{Baluev:Baluev2008}  form will hold true for the multi-band case, however we caution that the FAP estimates to possibly be underestimated.
 
-
 \begin{figure*}
   \includegraphics[width=0.8\textwidth]{figures/fap_approximation_mlsp.pdf}
   \centering 
   \caption{Multi-band FAP rate computed via the Baluev approximation compared to a $2\sigma$ bootstrap approach for 5000 RRL and EB alert light curves. For each light curve we also color code the total number of $ugrizy$ detections.}
 \end{figure*}
-
-...implements the approximation proposed by Baluev 2008, which employs extreme value statistics to compute an upper bound of the false alarm probability for the alias-free case.
-
 
 
 
