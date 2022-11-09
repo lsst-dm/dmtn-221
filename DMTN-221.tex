@@ -171,8 +171,7 @@ In this section we bench mark the average run time of the Lomb-Scargle periodogr
 The current gatspy, which is a pure Python based implementation of the Lomb-Scargle periodogram, scales as  $\mathcal{O}$[N] algorithm for small N and becomes $\mathcal{O}$[N$^2$] at larger trial periods. The unique rapid calculation of the periodogram emerges from the efficient use of linear algebraic operations. The average run time also depends on the number of detections and model complexity which we will explore in this section. For our run time analysis we will consider both a single-band and multi-band case for the RR Lyrae only since the run time is not a function of the underlying signal. 
 
 % Discussion of single-band 
-We first measure the effects of run time on the single-band RRL photometry in the $r$-band filter. In practice, this would work for any given filter given the rolling cadence of LSST. For each light curve, we run the Lomb-Scargle periodogram 10 times per light curve, and compute the median run time. Additionally, we run this for each combination of oversampling factor, Nyquist frequency, and Fourier components. In Figure \ref{fig:run_time_single}, we display the results for the single-band photometry. We also color code the average fractional error per light curve iteration. As mentioned in the single-band Lomb-Scargle method, by design will be poorly sampled especially within the 12 month history. As expected, due to the sparse sampled light curves, the majority of light curves scale linearly with number of detections, and have average run times below one second. 
-
+We first measure the effects of run time on the single-band RRL photometry in the $r$-band filter. In practice, this would work for any given filter given the rolling cadence of LSST. For each light curve, we run the Lomb-Scargle periodogram 10 times per light curve, and compute the median run time. Additionally, we run this for each combination of oversampling factor, Nyquist frequency, and Fourier components. In Figure \ref{fig:run_time_single}, we display the results for the single-band photometry. We also color code the average fractional error per light curve iteration. As mentioned in the single-band Lomb-Scargle method, by design will be poorly sampled especially within the 12 month history. As expected, due to the sparse sampled light curves, the majority of light curves scale linearly with number of detections, and have average run times below one second. We do not find any major derivations from the average run time when increasing the number of Fourier components from one to three. It is possible that single-band periodograms will generally be able to afford higher modes of Fourier components while still fitting within the AP time frame. Overall the majority of single-band periodograms are consistently below one second for the suggested period grid parameters. 
 
  
  \begin{figure*}
@@ -183,14 +182,20 @@ We first measure the effects of run time on the single-band RRL photometry in th
 \end{figure*}
 
 % Discussion of multi-band
+In Figure \ref{fig:run_time_multi} we show the average run time for the multi-band light curves by increasing Fourier modes. Similarly to the single-band, we find a linear scaling between each period grid mode. We find that the finer period grids are better at identifying the correct periods while also keeping the run time at about one second per light curve with a 12 photometric history. It is evident that the multi-band Lomb-Scargle implementation has the advantage of similar run-times all while utilizing all six photometric bandpasses to find the period. 
 
-% Conclusions & recommendations  
 
 \begin{figure*}
   \includegraphics[width=0.8\textwidth]{figures/multi-lsp-runs.pdf}
   \centering 
   \caption{Average run time per number of $ugrizy$ light curve detections. Each column represents the model complexity of each multi-band Lomb Scargle periodogram. Within each panel, we use a heuristically determined period grid by varying the oversampling factor and the the Nyquist frequency.  Finally, for each successive run we color code the fractional error compared from the true period.}
+ \label{fig:run_time_multi}
 \end{figure*}
+
+
+% Conclusions & recommendations  
+Interestingly, the question of run time also raises the question of how many periodic sources do we expect per LSST pointing and limiting magnitude depth...
+
 
 \subsection{Current Limitations}\label{sec:limitations}
 
@@ -200,7 +205,7 @@ From our analysis, it is evident that the eclipsing binaries overall lack comple
 To validate a possible scenario of higher SNR for the eclipsing binaries, using an in-house tool we preliminary... In Figure \ref{fig:multi_lsp_custom} we show the injected versus recovered period for our custom light curves with overall higher SNR. In this case we see that the 
 
 \begin{figure*}
-  \includegraphics[width=0.7\textwidth]{figures/snr_average.pdf}
+  \includegraphics[width=0.5\textwidth]{figures/snr_average.pdf}
   \centering 
   \caption{We compute the median signal-to-noise ratio per light curve in the $ugrizy$ bandpasses.  We smoothen each distribution using a Gaussian Kernel Density estimator. Top panel is the RR Lyrae and bottom is the Eclipsing Binaries. }
   \label{fig:snr_average}
@@ -208,7 +213,7 @@ To validate a possible scenario of higher SNR for the eclipsing binaries, using 
 
 
 \begin{figure*}
-  \includegraphics[width=0.9\textwidth]{figures/multi_lsp_rectest.pdf}
+  \includegraphics[width=0.8\textwidth]{figures/multi_lsp_rectest.pdf}
   \centering 
   \caption{Multi-band injection-recovery test for 5000 RRL (top row) and EB (bottom row). Each column title includes the number of Fourier base and band terms used to compute the Lomb-Scargle periodogram. Additionally we color code each recovered period by the number of detections. The overlaid curved lines represent the n=1 aliasing, while the straight lines represent the n=1,2 harmonics.}
   \label{fig:multi_lsp_custom}
