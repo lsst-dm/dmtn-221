@@ -102,7 +102,6 @@ N_{P} = int \bigg{(} \frac{1}{2} \mathcal{O} F_{nyquist} N_{det} \bigg{)}
 Building some intuition, the Nyquist factor pushes the minimum starting frequency to smaller periods while the oversampling factor will increase the maximum frequency grid and overall increase the resolution of the grid. In later sections we evaluate for each frequency grid the period accuracy computed on the ELAsTiCC light curves. 
 
 \subsection{Single Band Lomb-Scargle Periodogram}
-
 We first consider the case of the canonical single-band detections from AP. In this section we aim to answer  if the 12 month AP history in a single-band light curve is enough to recover periods. The reader should refer to \citet{VanderPlas:VP2015} for a throughout review of the Lomb-Scargle periodogram.   
 
 We consider the canonical floating-mean Lomb-Scargle to estimate the periodogram of $10^4$ alert light curves in the \textit{r}-band for three Fourier component modes. For the average LSST field, our results are independent of the selected photometric filter due the uniformity of sky coverage from all filters. In Figure \ref{fig:single_band_lsp} we show the results of this analysis for RRL's (rop row) and EB's (bottom row). For each light curve model, we randomly sample a light curve and compute the Lomb-Scargle periodogram using a heuristic period grid with an oversampling factor of 2 and Nyquist frequency of 30 ($\sim$0.03 days) to account for the fast periodic phenomena. We extrapolated the highest power period from the periodogram and compare it to the true period. In Figure \ref{fig:single_band_lsp} we also include the number of \textit{r}-band detections for each light curve. We note that we did not find any reliable periods beyond 5 days for the eclipsing binaries. This is likely due to the fact of the small sample size beyond 5 days. Since we are re-sampling the same underlying models it is possible that the light curve re-sampling is not aduete enough to identify correct large periods. As expected, we did not find any preference of an optical single-band photometric filter that outperformed the others. While the RR Lyrae exhibit at larger Fourier modeling modes more aliasing, overall the recovery fraction of correctly identified periods is larger compared to the EBs. For both light curve models, we consistently found in each model configuration that the average correctly identified period coincides with a larger number of detections. Overall we find consistent results for the RR Lyrae done by a similar analysis by \citet{VanderPlas:VP2015}. The true challenge of this approach comes from the more complex light curves such as the EBs with more phase variation. 
@@ -118,18 +117,17 @@ We consider the canonical floating-mean Lomb-Scargle to estimate the periodogram
 On average, there will be 30 detections in each photometric band per 12 month light curve history. Given the sampling rate of LSST per pointing, this entails that the majority of single-band AP light curves would be too undersampled in order to compute a high confidence periodicity. Even with a low completeness, computing the Lomb-Scargle periodogram on single-band time series alerts, this will likely outperform any other known survey due to the large survey volume. The single-band Lomb-implementation are also faster by a factor of 5 due to the lower average number of detections per filter. We conclude that the single-band Lomb-Scargle misses by a higher margin the underlying true period due the small light curve photometric history. We now turn our attention to the multi-band Lomb-Scargle.
 
 \subsection{Multi-Band Lomb-Scargle Periodogram}
-Next, we test the multi-band Lomb-Scargle periodogram implementation adapted in \textsc{gatspy} to our ELAsTiCC light curves. Given the rich multi-band alert detections LSST will deliver, we expect that that conventional period finding algorithms to do better due to an increase of number of total detections. In short, the multi-band Lomb-Scargle periodogram we will be considering for this study can be written out with two components that use implemented in \textsc{gatspy} : 
-
+Next, we test the multi-band Lomb-Scargle periodogram implementation adapted in \textsc{gatspy} to our ELAsTiCC light curves. Given the rich multi-band alert detections LSST will deliver, we expect that that conventional period finding algorithms to do better due to an increase of number of total detections. In short, the multi-band Lomb-Scargle periodogram we will be considering for this study can be written out with two components that use implemented in \textsc{gatspy}:
+\smallbreak{}
 \begin{equation}
 \qquad y = \theta_0+\sum_{n=1}^{M_{base}}\left[\theta_{2 n-1} \sin (n \omega t)+\theta_{2 n} \cos (n \omega t)\right] \\
 \theta_0^{(k)}+\sum_{n=1}^{M _{band}}\left[\theta_{2 n-1}^{(k)} \sin (n \omega t)+\theta_{2 n}^{(k)} \cos (n \omega t)\right]
 \end{equation}
-
+\smallbreak{}
 First is the base Fourier component that describes the overall shared variability, and second is the per band component that is modeled by the residuals of the base component with each photometric filter. In practice, a larger configuration of base and band components can lead to the estimation of more complex light curves. \textsc{gatspy} automatically determines through the use of least-squares minimization the scalar parameters from the above equation. For a more detailed mathematical review of the multi-band Lomb-Scargle we suggest the review of \citet{VanderPlas:VP2015}. 
 
 % Discuss the findings of the multi-band LSP (re-do): WIP
 % TODO run simulation
-
 
 % Need to update figure
 \begin{figure*}
@@ -200,10 +198,26 @@ Interestingly, the question of run time also raises the question of how many per
 \subsection{Current Limitations}\label{sec:limitations}
 
 % Limitations to the Elasticc dataset 
-From our analysis, it is evident that the eclipsing binaries overall lack completeness in both cases of single and multi-band. We suspect that the main culpruit of low completeness to be the average low SNR that computed for the ELAsTiCC eclipsing binary sample. For example, in Figure \ref{fig:snr_average}, we show for a sample of 300 ELAsTiCC light curves that the average SNR for the RRL versus EB's to differ by a factor of 50. 
+From our analysis, it is evident that the eclipsing binaries overall lack completeness in both cases of single and multi-band. We suspect that the main culpruit of low completeness to be the average low SNR that computed for the ELAsTiCC eclipsing binary sample. For example, in Figure \ref{fig:snr_average}, we show for a sample of all training ELAsTiCC light curves with their average SNR for the RRL versus EB's. On average we found that the EBs are skewed toward a low SNR while many more RRL have high amplitude variations and thus higher SNR. Given the noisy EB light curves provided from ELAsTiCC is is possible that our current estimates would be considered for periodic events close to the limiting LSST magnitude. 
 
-To validate a possible scenario of higher SNR for the eclipsing binaries, using an in-house tool we preliminary... In Figure \ref{fig:multi_lsp_custom} we show the injected versus recovered period for our custom light curves with overall higher SNR. In this case we see that the 
+As a proof of concept, we can validate a possible scenario of high SNR eclipsing binary light curves using the cadence strategy of op$\_$sims v.1.7 using an in-house light curve building tool. 
 
+First, we will assume that the phase-folded EB light curve can be modeled by a decomposed four-component Fourier series model:
+\begin{equation}
+m(t) = m_0 + \sum_{i=1}^{N=4} A_icos(2\pi i\Phi) + B_isin(2\pi i \Phi)
+\end{equation}
+where the phase-offset can be defined as:
+\begin{equation}
+\Phi(t,t0) = \frac{t-t_{0}}{P}-int\bigg{(}\frac{t-t_{0}}{P} \bigg{)}
+\end{equation}
+
+We adopt the fitted Fourier terms from \citet{Deb:Deb11} where the parameters for 62 luminous bright single-band eclipsing binary light curves are modeled from the All Sky Automated Survey
+(ASAS)-3 project. We assume that the Fourier terms apply to all photometric bandpasses, while adding a small color offset between each photometric filter (by roughly assuming that these are equal temperature eclipsing binaries). Using the 62 EB models, we sample each model at the $ugrizy$ cadence separation described by the op$_$sims v.1.7 simulation. For each EB event, we randomly assign a coordinate within the LSST footprint and a distance drawn from a log-normal distribution with mean 5 kpc and standard deviation of 2. Using a log-normal distributon of absolute magnitudes we then solve the distance modulus to infer the apparent magnitude of the system, without taking into account the effects of Galactic extinction. Additionally, for each photometric bandpass we assume a random constant color offset between zero and 4 magnitudes. To estimate the expected SNR from a source with magnitude $m$ by assuming a Gaussian distribution of photons we apply the standard $m5snr$ equation. Finally, to compute the photometric error we use the $m_5$ SNR estimate....
+
+
+In Figure \ref{fig:multi_lsp_custom} we show the injected versus recovered period for our custom light curves with overall higher SNR. In this case we see that the 
+
+% Todo: Switch figure to only EB's
 \begin{figure*}
   \includegraphics[width=0.5\textwidth]{figures/snr_average.pdf}
   \centering 
