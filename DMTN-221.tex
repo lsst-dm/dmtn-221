@@ -209,9 +209,8 @@ where the phase-offset can be defined as:
 \end{equation}
 
 We adopt the fitted Fourier terms from \citet{Deb:Deb11} where the parameters for 62 luminous bright single-band eclipsing binary light curves are modeled from the All Sky Automated Survey
-(ASAS)-3 project. We assume that the Fourier terms apply to all photometric bandpasses, while adding a small color offset between each photometric filter (by roughly assuming that these are equal temperature eclipsing binaries). Using the 62 EB models, we sample each model at the $ugrizy$ cadence separation described by the op$\_$sims v.1.7 simulation. For each EB event, we randomly assign a coordinate within the LSST footprint and a distance drawn from a log-normal distribution with mean 5 kpc and standard deviation of 2. Using a log-normal distributon of absolute magnitudes we then solve the distance modulus to infer the apparent magnitude of the system, without taking into account the effects of Galactic extinction. Additionally, for each photometric bandpass we assume a random constant color offset between zero and 4 magnitudes. To estimate the expected SNR from a source with magnitude $m$ by assuming a Gaussian distribution of photons we apply the standard $m5snr$ equation. Finally, to compute the photometric error we use the $m_5$ SNR estimate the photometric errors. 
-
-In Figure \ref{fig:multi_lsp_custom} we show the injected versus recovered period for our custom light curves with overall higher SNR. In this case we see that the the overall injection and recovery testing does overall has a better accuracy in finding eclipsing binary periodicities.
+(ASAS)-3 project. We assume that the Fourier terms apply to all photometric bandpasses, while adding a small color offset between each photometric filter (by roughly assuming that these are equal temperature eclipsing binaries). Using the 62 EB models, we sample each model at the $ugrizy$ cadence separation described by the op$\_$sims v.1.7 simulation. For each EB event, we randomly assign a coordinate within the LSST footprint and a distance drawn from a log-normal distribution with mean 5 kpc and standard deviation of 2. Using a log-normal distributon of absolute magnitudes we then solve the distance modulus to infer the apparent magnitude of the system, without taking into account the effects of Galactic extinction. Additionally, for each photometric bandpass we assume a random constant color offset between zero and 4 magnitudes. To estimate the expected SNR from a source with magnitude $m$ by assuming a Gaussian distribution of photons we apply the standard $m5snr$ equation. Finally, to compute the photometric error we use the $m_5$ SNR estimate the photometric errors associated with each light curve. We run the multi-band Lomb-Scargle on the multi-band light curves and asses the recovery fraction. In Figure \ref{fig:multi_lsp_custom} we show the injected versus recovered period for our custom light curves with overall higher SNR compared to the 
+ELAsTiCC light curves overall recover a larger fraction the true underlying injected periods. We notice that the completeness especially increases at the (N$_{base}$, N$_{band}$)=(2,1) Fourier model configuration.
 
 % Todo: Switch figure to only EB's
 \begin{figure*}
@@ -229,12 +228,9 @@ In Figure \ref{fig:multi_lsp_custom} we show the injected versus recovered perio
   \label{fig:multi_lsp_custom}
 \end{figure*}
 
-
 Future investigations prior to the onset of the LSST should investigate a larger suite of eclipsing binary populations at higher luminosities and more throughout  combinations of physical parameters. 
 
 \subsection{Conclusions}
-
-We present a systematic study of periodicity recovery for synthetic LSST AP light curves for RR Lyrae and Eclipsing Binaries.
 
 
 \appendix
