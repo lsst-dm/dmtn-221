@@ -29,7 +29,7 @@ Anastasios Tzanidakis, Eric Bellm
 
 % WIP
 \setDocAbstract{%
-The baselined timeseries features to be computed in Alert Production include a Lomb-Scargle periodogram. We assess the computational and scientific performance of several configurations on simulated alert data.
+The baselined timeseries features to be computed in Alert Production include a Lomb-Scargle periodogram ran on two classes of variable systems: RR Lyrae and Eclipsing Binaries. Based on a simulated LSST-like cadence light curves taken from the Extended LSST Astronomical Time-series Classification Challenge (ELAsTiCC) we perform an end-to-end test to characterize the periodicity recovery on the Alert Production multi-band light curves. In both variable classes, we found that a single-band Lomb-Scargle implementation yields to a low fraction of recovered periods, with a significant preference on the simple periodic phenomena such as RR Lyrae. We also invetigated the results from a multi-band Lomb-Scargle and found an increased fraction of recovered periodicities above 15$\%$ for the eclipsing binaries, and over 80$\%$ for the RR Lyrae stars. Our findings suggest that a multi-band Lomb-Scargle should be implemented for searching periodic phenomena through AP. We also asses the computational and scientific performance of several configurations on simulated alert data and find that our current configuration scales linearly with the number of detections while assuming an heuristic frequency grid. 
 }
 
 
@@ -51,9 +51,6 @@ The baselined timeseries features to be computed in Alert Production include a L
 
 % ADD CONTENT HERE
 % You can also use the \input command to include several content files.
-
-\section{Note}
-\textcolor{red}{Please note that this DM-technote is currently work in progress, and publicly available. The final findings will be pushed to the DMTN-221 repository in late November of 2022 by Anastasios Tzanidakis.}
 
 
 \section{Motivation}
