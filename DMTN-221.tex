@@ -207,13 +207,12 @@ In the cases of high SNR such as the RR Lyrae, we find that both significance es
 \subsection{Timing Analysis}
 
 % Introduction
-In this section we bench mark the average run time of the Lomb-Scargle periodogram implementation from gatspy.
+In this section we bench mark the average run time of the Lomb-Scargle periodogram implementation from \textsc{gatspy}.
 The balancing act of high periodocity accuracy while confining the calculations within the AP timeframe is a challenging act.
 While coarse period grids  and complex models can achieve more accurate periods, this will not be possible to do with AP.
 Instead, in this section we will explore the lower limit of run time while tweaking the overall period grid coarseness and model complexity.
 
-The current gatspy, which is a pure Python based implementation of the Lomb-Scargle periodogram, scales as  $\mathcal{O}$[N] algorithm for small N and becomes $\mathcal{O}$[N$^2$] at larger trial periods.
-The unique rapid calculation of the periodogram emerges from the efficient use of linear algebraic operations.
+The current \textsc{gatspy}, which is a pure Python based implementation of the Lomb-Scargle periodogram, scales as  $\mathcal{O}$[N] algorithm for small N and becomes $\mathcal{O}$[N$^2$] at larger trial periods.The unique rapid calculation of the periodogram emerges from the efficient use of linear algebraic operations.
 The average run time also depends on the number of detections and model complexity which we will explore in this section.
 For our run time analysis we will consider both a single-band and multi-band case for the RR Lyrae only since the run time is not a function of the underlying signal.
 
@@ -317,19 +316,14 @@ Top panel is the RR Lyrae and bottom is the Eclipsing Binaries.
   \includegraphics[width=0.8\textwidth]{figures/multi_lsp_rectest.pdf}
   \centering 
   \caption{Multi-band injection-recovery test for 5000 RRL (top row) and EB (bottom row).
-Each column title includes the number of Fourier base and band terms used to compute the Lomb-Scargle periodogram.
-Additionally we color code each recovered period by the number of detections.
-The overlaid curved lines represent the n=1 aliasing, while the straight lines represent the n=1,2 harmonics.}
+Each column title includes the number of Fourier base and band terms used to compute the Lomb-Scargle periodogram. Additionally we color code each recovered period by the number of detections. The overlaid curved lines represent the n=1 aliasing, while the straight lines represent the n=1,2 harmonics.}
   \label{fig:multi_lsp_custom}
 \end{figure*}
 
 Future investigations prior to the onset of the LSST should investigate a larger suite of eclipsing binary populations at higher luminosities and more throughout  combinations of physical parameters.
 
-
 \subsection{Conclusions}
-
-Import then it will take the value as the type for the function hence it will allow us to take into account ssfss-
-
+In conclusion, this study investigates the periodicity recovery rate of RR Lyrae and eclipsing binaries on single-band and multi-band light curves using the Extended LSST Astronomical Time-series Classification Challenge (ELAsTiCC) training dataset. Our results suggest that using a fixed heuristic frequency grid can successfully recover the true underlying periods from the Lomb-Scargle periodogram using \textsc{gatspy}. We ran single-band Lomb-Scargle on the $r$-band light curves and overall found our recovery fraction to be less than 30$\%$ for RRL and less than 10$\%$ for EB. On the contrary,  we find a significant leverage and boost of performance using the multi-band Lomb-Scargle approach and find the RRL recovery fraction to be as high as 95 $\%$, while the EBs to be 40 $\%$. We speculate that the low recovery fraction of the EB's are likely due to the injected low SNR models in the ELAsTiCC training dataset. After using an in-house light curve generation tool using the decomposed Fourier terms for EB's and RRL, we find an improvement in the overall recovery fraction. This work also suggest that the analytic Baluev FAP approximation correlates significantly with a more traditional bootstrap FAP approach, hence we suggest that this can be used as a proxy for peak significance. Within the time limitations in AP, we demonstrate through a benchmark timing analysis that a heuristic frequency for both single-band and multi-band Lomb-Scargle periodograms with a 12-month photometric history are scalable to the time requirements of the LSST AP. It is suggested that future investigations prior to the onset of the LSST AP should investigate a larger suite of eclipsing binary populations at higher luminosities and with more throughout combinations of physical parameters, including a more robust analysis on the FAP estimates for cases of correlated noise and high aliasing. 
 
 \appendix
 % Include all the relevant bib files.
