@@ -27,7 +27,6 @@ Anastasios Tzanidakis, Eric Bellm
 % Optional: name of the document's curator
 % \setDocCurator{The Curator of this Document}
 
-% WIP
 \setDocAbstract{%
 The baselined timeseries features to be computed in Alert Production include a Lomb-Scargle periodogram ran on two classes of variable systems: RR Lyrae and Eclipsing Binaries.
 Based on a simulated LSST-like cadence light curves taken from the Extended LSST Astronomical Time-series Classification Challenge (ELAsTiCC) we perform an end-to-end test to characterize the periodicity recovery on the Alert Production multi-band light curves.
@@ -114,12 +113,10 @@ N_{P} = int \bigg{(} \frac{1}{2} \mathcal{O} F_{nyquist} N_{det} \bigg{)}
 
 Building some intuition, the Nyquist factor pushes the minimum starting frequency to smaller periods while the oversampling factor will increase the maximum frequency grid and overall increase the resolution of the grid. In later sections we evaluate for each frequency grid the period accuracy computed on the ELAsTiCC light curves.
 
-
 \subsection{Single Band Lomb-Scargle Periodogram}
 We first consider the case of the canonical single-band detections from AP. In this section we aim to answer if the 12 month AP history in a single-band light curve is enough to recover periods.The reader should refer to \citet{VanderPlas:VP2015} for a throughout review of the Lomb-Scargle periodogram.
   
 We consider the canonical floating-mean Lomb-Scargle to estimate the periodogram of $10^4$ alert light curves in the \textit{r}-band for three Fourier component modes. We caution the average LSST field, the completeness for single-band periodic events will likely depend on the filter since overall filter coverage is not uniform. For example, we would expect that the \textit{u}-band filter to suffer from lower completeness due to the smaller number of visits. In Figure \ref{fig:single_band_lsp} we show the results of this analysis for RRL's (rop row) and EB's (bottom row). For each light curve model, we randomly sample a light curve and compute the Lomb-Scargle periodogram using a heuristic period grid with an oversampling factor of 2 and Nyquist frequency of 30 ($\sim$0.03 days) to account for the fast periodic phenomena. We extrapolated the highest power period from the periodogram and compare it to the true period. In Figure \ref{fig:single_band_lsp} we also include the number of \textit{r}-band detections for each light curve. We note that we did not find any reliable periods beyond 5 days for the eclipsing binaries. This is likely due to the fact of the small sample size beyond 5 days. Since we are re-sampling the same underlying models it is possible that the light curve re-sampling is not adequate enough to identify correct large periods. As expected, we did not find any preference of an optical single-band photometric filter that outperformed the others. While the RR Lyrae exhibit at larger Fourier modeling modes more aliasing, overall the recovery fraction of correctly identified periods is larger compared to the EBs. For both light curve models, we find that the single-band Lomb Scargle recovery fraction average to be higher for light curves that had more detections. Overall we find consistent results for the RR Lyrae done by a similar analysis by \citet{VanderPlas:VP2015}. The true challenge of this approach comes from the more complex light curve models such as the EBs.
-
 
 \begin{figure*}
   \includegraphics[width=0.7\textwidth]{figures/singleband_lsp.pdf}
@@ -190,7 +187,6 @@ In Figure \ref{fig:boot}, we show the correlation between the Baluev and bootstr
 For each variable class, we ran a Pearson-R correlation test and found in both cases a a negative r-slope with p-value significance p$\ll$ 0.005.
 We also notice that the overall FAP levels of the EBs to be higher since their recovery rates are much smaller.
 
-
 \begin{figure*}
   \includegraphics[width=0.8\textwidth]{figures/fap_approximation_mlsp.pdf}
   \centering 
@@ -201,7 +197,6 @@ For each light curve we also color code the total number of $ugrizy$ detections.
 
 Based on preliminary estimates, Figure \ref{fig:boot} suggest that parametric forms of the FAP can approximate the bootstrap significance without the computational cost of running N bootstraps.
 In the cases of high SNR such as the RR Lyrae, we find that both significance estimates show a dependency of the number of detections.
-
 
 % Summary: Timing analysis will include details on bench marking the run time of each frequency grid and model as a function of number of detections and period accuracy.
 \subsection{Timing Analysis}
@@ -229,12 +224,10 @@ We do not find any major derivations from the average run time when increasing t
 It is possible that single-band periodograms will generally be able to afford higher modes of Fourier components while still fitting within the AP time frame.
 Overall the majority of single-band periodograms are consistently below one second for the suggested period grid parameters.
 
-
- 
- \begin{figure*}
-  \includegraphics[width=0.8\textwidth]{figures/singleRUN_LSP_RRL.pdf}
-  \centering 
-  \caption{Average run time per number of $r$ light curve detections.
+\begin{figure*}
+\includegraphics[width=0.8\textwidth]{figures/singleRUN_LSP_RRL.pdf}
+\centering 
+\caption{Average run time per number of $r$ light curve detections.
 Each column represents the model complexity of each multi-band Lomb Scargle periodogram.
 Within each panel, we use a heuristically determined period grid by varying the oversampling factor and the the Nyquist frequency.
  Finally, for each successive run we color code the fractional error compared from the true period.}
@@ -247,8 +240,6 @@ Similarly to the single-band, we find a linear scaling between each period grid 
 We find that the finer period grids are better at identifying the correct periods while also keeping the run time at about one second per light curve with a 12 photometric history.
 It is evident that the multi-band Lomb-Scargle implementation has the advantage of similar run-times all while utilizing all six photometric bandpasses to find the period.
 
-
-
 \begin{figure*}
   \includegraphics[width=0.8\textwidth]{figures/multi-lsp-runs.pdf}
   \centering 
@@ -259,9 +250,13 @@ Within each panel, we use a heuristically determined period grid by varying the 
  \label{fig:run_time_multi}
 \end{figure*}
 
+% Comments on Astropy Multi-band Lomb-Scargle
+As of 2023, \textsc{Astropy}\footnote{\textsc{Astropy} v5.3.3} has implemented for public use the multi-band Lomb-Scargle periodogram directly from the \textsc{gatspy} implementation.
+To use the \textsc{Astropy} MLSP implementation, we followed the online open-source documentation tutorial for the basic use of the API that has a slightly different API from the inherent \textsc{gatspy} implementation\footnote{\href{https://docs.astropy.org/en/stable/timeseries/lombscarglemb.html}{https://docs.astropy.org/en/stable/timeseries/lombscarglemb.html}}. 
+Using the same  ELAsTiCC light curves and period grid parameters as in the previous sections, we found similar performance both in timing and period recovery between both algorithms.
 
 % Conclusions & recommendations  
-Interestingly, the question of run time also raises the question of how many periodic sources do we expect per LSST pointing and limiting magnitude depth...
+Further tests should be done to explore the effects of the number density of periodic sources per LSST pointing including other parameters such as achieved depth. Other metrics, such as minimum period grid required per pointing to recover a period source should also be investigated. 
 
 
 \subsection{Current Limitations}\label{sec:limitations}
@@ -273,10 +268,7 @@ For example, in Figure \ref{fig:snr_average}, we show for a sample of all traini
 On average we found that the EBs are skewed toward a low SNR while many more RRL have high amplitude variations and thus higher SNR.
 Given the noisy EB light curves provided from ELAsTiCC is is possible that our current estimates would be considered for periodic events close to the limiting LSST magnitude.
 
-
 As a proof of concept, we can validate a possible scenario of high SNR eclipsing binary light curves using the cadence strategy of op$\_$sims v.1.7 using an in-house light curve building tool.
-
-
 First, we will assume that the phase-folded EB light curve can be modeled by a decomposed four-component Fourier series model:
 \begin{equation}
 m(t) = m_0 + \sum_{i=1}^{N=4} A_icos(2\pi i\Phi) + B_isin(2\pi i \Phi)
