@@ -250,11 +250,6 @@ Within each panel, we use a heuristically determined period grid by varying the 
  \label{fig:run_time_multi}
 \end{figure*}
 
-% Comments on Astropy Multi-band Lomb-Scargle
-As of 2023, \textsc{Astropy}\footnote{\textsc{Astropy} v5.3.3} has implemented for public use the multi-band Lomb-Scargle periodogram directly from the \textsc{gatspy} implementation.
-To use the \textsc{Astropy} MLSP implementation, we followed the online open-source documentation tutorial for the basic use of the API that has a slightly different API from the inherent \textsc{gatspy} implementation\footnote{\href{https://docs.astropy.org/en/stable/timeseries/lombscarglemb.html}{https://docs.astropy.org/en/stable/timeseries/lombscarglemb.html}}. 
-Using the same  ELAsTiCC light curves and period grid parameters as in the previous sections, we found similar performance both in timing and period recovery between both algorithms.
-
 % Conclusions & recommendations  
 Further tests should be done to explore the effects of the number density of periodic sources per LSST pointing including other parameters such as achieved depth. Other metrics, such as minimum period grid required per pointing to recover a period source should also be investigated. 
 
@@ -312,7 +307,18 @@ Each column title includes the number of Fourier base and band terms used to com
   \label{fig:multi_lsp_custom}
 \end{figure*}
 
-Future investigations prior to the onset of the LSST should investigate a larger suite of eclipsing binary populations at higher luminosities and more throughout  combinations of physical parameters.
+Future investigations prior to the onset of the LSST should investigate a larger sample of eclipsing binary populations at higher luminosities and more throughout  combinations of physical parameters.
+
+\subsection{Implementation to LSST Stack}\label{sec:stack}
+
+% Comments on Astropy Multi-band Lomb-Scargle
+As of 2023, \textsc{Astropy}\footnote{\textsc{Astropy} v5.3.3} has implemented for public use the multi-band Lomb-Scargle periodogram directly from the \textsc{gatspy} implementation. To use the \textsc{Astropy} MLSP implementation, we followed the online open-source documentation tutorial for the basic use of the API that has a slightly different API from the inherent \textsc{gatspy} implementation\footnote{\href{https://docs.astropy.org/en/stable/timeseries/lombscarglemb.html}{https://docs.astropy.org/en/stable/timeseries/lombscarglemb.html}}. Using the same  ELAsTiCC light curves and period grid parameters as in the previous sections, we found similar performance both in timing and period recovery between both algorithms. The current implementation on the Stack assumes (N$_{\text{base}}$, N$_{\text{band}}$)=(1,1), and significance is evaluated via the Baluev approximation (i.e see equation 3 in \citet{Suveges:Suveges15}). As part of releasing the multi-band Lomb-Scargle period and its significance, we also report the model fit parameters described in equation 3. Assuming each light curve as (k) unique bands, we define the Amplitude ($A^{k}$) and Phase ($\phi^{k}$) from the terms in the linear model for each filter: 
+\begin{equation}
+A^{k} = \sqrt{(\theta_{1}^{k})^2 + (\theta_{2}^{k})^2}
+\end{equation}
+\begin{equation}
+\phi^{k} = arctan(\theta_2^{k}/\theta_{1}^{k})
+\end{equation}
 
 \subsection{Conclusions}
 In conclusion, this study investigates the periodicity recovery rate of RR Lyrae and eclipsing binaries on single-band and multi-band light curves using the Extended LSST Astronomical Time-series Classification Challenge (ELAsTiCC) training dataset. Our results suggest that using a fixed heuristic frequency grid can successfully recover the true underlying periods from the Lomb-Scargle periodogram using \textsc{gatspy}. We ran single-band Lomb-Scargle on the $r$-band light curves and overall found our recovery fraction to be less than 30$\%$ for RRL and less than 10$\%$ for EB. On the contrary,  we find a significant leverage and boost of performance using the multi-band Lomb-Scargle approach and find the RRL recovery fraction to be as high as 95 $\%$, while the EBs to be 40 $\%$. We speculate that the low recovery fraction of the EB's are likely due to the injected low SNR models in the ELAsTiCC training dataset. After using an in-house light curve generation tool using the decomposed Fourier terms for EB's and RRL, we find an improvement in the overall recovery fraction. This work also suggest that the analytic Baluev FAP approximation correlates significantly with a more traditional bootstrap FAP approach, hence we suggest that this can be used as a proxy for peak significance. Within the time limitations in AP, we demonstrate through a benchmark timing analysis that a heuristic frequency for both single-band and multi-band Lomb-Scargle periodograms with a 12-month photometric history are scalable to the time requirements of the LSST AP. It is suggested that future investigations prior to the onset of the LSST AP should investigate a larger suite of eclipsing binary populations at higher luminosities and with more throughout combinations of physical parameters, including a more robust analysis on the FAP estimates for cases of correlated noise and high aliasing. 
