@@ -18,6 +18,7 @@
 \input{authors}
 
 \setDocRef{DMTN-221}
+\setDocDOI{10.71929/rubin/2998097}
 \setDocUpstreamLocation{\url{https://github.com/lsst-dm/dmtn-221}}
 
 \date{\vcsDate}
@@ -29,7 +30,7 @@
 The baselined timeseries features to be computed in Alert Production include a Lomb-Scargle periodogram ran on two classes of variable systems: RR Lyrae and Eclipsing Binaries.
 Based on a simulated LSST-like cadence light curves taken from the Extended LSST Astronomical Time-series Classification Challenge (ELAsTiCC) we perform an end-to-end test to characterize the periodicity recovery on the Alert Production multi-band light curves.
 In both variable classes, we found that a single-band Lomb-Scargle implementation yields to a low fraction of recovered periods, with a significant preference on the simple periodic phenomena such as RR Lyrae.
-We also invetigated the results from a multi-band Lomb-Scargle and found an increased fraction of recovered periodicities above 15$\%$ for the eclipsing binaries, and over 80$\%$ for the RR Lyrae stars.
+We also investigated the results from a multi-band Lomb-Scargle and found an increased fraction of recovered periodicities above 15$\%$ for the eclipsing binaries, and over 80$\%$ for the RR Lyrae stars.
 Our findings suggest that a multi-band Lomb-Scargle should be implemented for searching periodic phenomena through AP.
 We also asses the computational and scientific performance of several configurations on simulated alert data and find that our current configuration scales linearly with the number of detections while assuming an heuristic frequency grid.
 
@@ -41,7 +42,8 @@ We also asses the computational and scientific performance of several configurat
 % Fields: VERSION, DATE, DESCRIPTION, OWNER NAME.
 % See LPM-51 for version number policy.
 \setDocChangeRecord{%
-  \addtohist{1}{YYYY-MM-DD}{Unreleased.}{Anastasios Tzanidakis, Eric Bellm}
+  \addtohist{1}{2024-05-03}{Unreleased.}{Anastasios Tzanidakis, Eric Bellm}
+  \addtohist{2}{2025-10-10}{Add DOI}{Tim Jenness}
 }
 
 
